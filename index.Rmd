@@ -14,24 +14,34 @@ output:
     lib_dir: libs
 ---
 
-```{r setup, include = FALSE}
+```{r before-slides, include = FALSE, cache = FALSE}
 # Prettify slide appearance
 knitr::opts_chunk$set(
   warning = FALSE, 
   message = FALSE,
+  cache = TRUE, 
+  autodep = TRUE,
   fig.height = 6, 
   out.width = "100%", 
   comment = " ",
   dpi = 300
 )
 xaringanExtra::use_panelset()
+```
 
+
+```{r setup, include = FALSE, cache = FALSE}
 # Load packages
 library(conflicted)
 library(here)
 library(tidyverse)
 conflict_prefer("filter", "dplyr")
 library(gghighlight)
+library(ggpubr)
+library(ggrepel)
+library(ggalt)
+library(flipbookr)
+library(emo)
 
 # Import & process data
 midwest <- c(
@@ -41,7 +51,10 @@ midwest <- c(
 fatal_crash_smry_by_state <- read_csv(
   here("data", "usa-fatal-crash-totals-2018.csv")
 ) %>%
-  filter(state %in% midwest)
+  filter(state %in% midwest) %>%
+  rename(
+    death_rate_vmt = deaths_per_100m_vmt, death_rate_pop = deaths_per_100k_pop
+  )
 
 fatal_crash_monthly_counts <- read_csv(
   here("data", "usa-fatal-crash-count-by-month.csv")
@@ -51,8 +64,9 @@ fatal_crash_monthly_counts <- read_csv(
     -crash_year, names_to = "crash_month", values_to = "fatal_crash_freq"
   )
 
-# Source flipbook functions
-source("https://raw.githubusercontent.com/EvaMaeRey/little_flipbooks_library/master/xaringan_reveal_parentheses_balanced.R")
+states_with_alcohol_problem <- read_csv(
+  here("data", "states-with-alcohol-problem-in-2018.csv")
+)
 ```
 
 layout: false
@@ -78,19 +92,20 @@ class: middle center bg-main1
 
 ---
 
-```{r gghigh-demo1, eval = FALSE, echo = FALSE}
+```{r gghigh-demo1, include = FALSE}
 ggplot(fatal_crash_smry_by_state) +
-  aes(x = deaths_per_100m_vmt, y = state) +
+  aes(x = death_rate_vmt, y = state) +
   geom_point() + 
   aes(
     y = fct_reorder(
-      state, deaths_per_100m_vmt
+      state, death_rate_vmt
     )
   ) + 
   geom_segment(
     aes(
       x = 0, y = state, 
-      xend = deaths_per_100m_vmt, yend = state
+      xend = death_rate_vmt, 
+      yend = state
     )
   ) + 
   labs(
@@ -107,10 +122,10 @@ ggplot(fatal_crash_smry_by_state) +
     )
   ) +
   labs(caption = "Data source: IIHS") +
-  gghighlight(state %in% c("Iowa", "Ohio"))
+  gghighlight(state == "Iowa")
 ```
 
-`r apply_reveal("gghigh-demo1")`
+`r chunk_reveal("gghigh-demo1")`
 
 ---
 
@@ -120,9 +135,12 @@ class: middle center bg-main1
 
 ---
 
-```{r gghigh-demo2, eval = FALSE, echo = FALSE}
+```{r gghigh-demo2, include = FALSE}
 ggplot(fatal_crash_monthly_counts) + 
-  aes(x = crash_month, y = fatal_crash_freq) + 
+  aes(
+    x = crash_month, 
+    y = fatal_crash_freq
+  ) + 
   aes(group = crash_year) +
   geom_line() + 
   scale_x_discrete(limits = month.abb) + 
@@ -137,20 +155,34 @@ ggplot(fatal_crash_monthly_counts) +
     )
   ) +
   labs(caption = "Data source: FARS") +
-  gghighlight(max(fatal_crash_freq) > 3000)
+  gghighlight(
+    max(fatal_crash_freq) > 3000
+  )
 ```
 
-`r apply_reveal("gghigh-demo2")`
+`r chunk_reveal("gghigh-demo2")`
 
 ---
 
+class: split-40 white
 
+.column.bg-main1[.content.vmiddle.center[
 
+## Check [gghighlight intro-guide]("https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html") to learn more 
 
+## `r ji("point_right")`
 
+]]
 
+.column[.content.vmiddle[
 
+```{r gghigh-website, echo = FALSE}
+knitr::include_url(
+  "https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html", 
+  height = "600px"
+)
+```
 
-
+]]
 
 
