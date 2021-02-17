@@ -185,4 +185,123 @@ knitr::include_url(
 
 ]]
 
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggrepel]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+---
+
+```{r ggrepel-demo1, include = FALSE}
+ggplot(fatal_crash_smry_by_state) + 
+  aes(
+    x = death_rate_pop, 
+    y = death_rate_vmt
+  ) + 
+  geom_point() ->
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) ->
+  ggtext_ugly
+
+ggrepel_baseplot + 
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) ->
+  ggtext_pretty
+
+ggrepel_baseplot + 
+  geom_label(aes(label = state)) ->
+  gglabel_ugly
+
+ggrepel_baseplot + 
+  geom_label_repel(
+    aes(label = state), seed = 123
+  ) ->
+  gglabel_pretty
+```
+
+`r chunk_reveal("ggrepel-demo1")`
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+```{r ggrepel-demo2, include = FALSE}
+ggrepel_baseplot + 
+  geom_label_repel(
+    aes(label = state), 
+    seed = 123,
+    nudge_x = 0.2, #BREAK2
+    box.padding = 1, #BREAK3
+    segment.curvature = -0.2, #BREAK4
+    segment.ncp = 5, #BREAK5
+    segment.angle = 30 #BREAK6
+  ) + 
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) + 
+  labs(
+    x = "Deaths per 100k population"
+  ) + 
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor", 
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+
+`r chunk_reveal("ggrepel-demo2", break_type = "non_seq")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggrepel website](https://ggrepel.slowkow.com/index.html) to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggrepel-website, echo = FALSE}
+knitr::include_url(
+  "https://ggrepel.slowkow.com/index.html", 
+  height = "600px"
+)
+```
+
+]]
 
