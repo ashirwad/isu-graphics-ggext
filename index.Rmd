@@ -40,6 +40,8 @@ library(gghighlight)
 library(ggpubr)
 library(ggrepel)
 library(ggalt)
+library(viridisLite)
+library(ggthemes)
 library(flipbookr)
 library(emo)
 
@@ -54,7 +56,12 @@ fatal_crash_smry_by_state <- read_csv(
   filter(state %in% midwest) %>%
   rename(
     death_rate_vmt = deaths_per_100m_vmt, death_rate_pop = deaths_per_100k_pop
-  )
+  ) %>%
+  mutate(death_rate_vmt_above_mean = if_else(
+    death_rate_vmt > mean(death_rate_vmt), "Yes", "No"),
+    death_rate_vmt_z = death_rate_vmt
+  ) %>%
+  mutate(across(death_rate_vmt_z, ~round(as.vector(scale(.x)), 2)))
 
 fatal_crash_monthly_counts <- read_csv(
   here("data", "usa-fatal-crash-count-by-month.csv")
@@ -304,4 +311,174 @@ knitr::include_url(
 ```
 
 ]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggpubr]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1a]
+
+---
+
+```{r ggpubr-demo1, include = FALSE}
+ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", 
+  y = "death_rate_vmt",
+  sorting = "descending", #BREAK2
+  add = "segment", #BREAK3
+  add.params = list(size = 1), #BREAK4
+  dot.size = 9, #BREAK5
+  rotate = TRUE, #BREAK6
+  color = "death_rate_vmt_above_mean", #BREAK7
+  label = "death_rate_vmt", #BREAK8
+  font.label = list( #BREAK8
+    color = "white", size = 9, #BREAK8
+    vjust = 0.5 #BREAK8
+  ), #BREAK8
+  legend.title = "Value above mean", #BREAK9
+  title = paste( #BREAK9
+    "Motor vehicle crash death rate", #BREAK9
+    "per midwestern state, 2018" #BREAK9
+  ), #BREAK9
+  xlab = "Midwestern state", #BREAK9
+  ylab = "Deaths per 100 million VMT", #BREAK9
+  caption = "Data source: IIHS" #BREAK9
+)
+```
+
+`r chunk_reveal("ggpubr-demo1", break_type = "non_seq")`
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1b]
+
+---
+
+```{r ggpubr-demo2, include = FALSE}
+ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending", #BREAK2
+  add = "segment", #BREAK3
+  add.params = list(size = 2), #BREAK4
+  dot.size = 9, rotate = TRUE, #BREAK5
+  color = "death_rate_vmt_above_mean", #BREAK6
+  label = "death_rate_vmt_z", #BREAK7
+  font.label = list( #BREAK8
+    color = "white", size = 9, #BREAK8
+    vjust = 0.5 #BREAK8
+  ), #BREAK8
+  legend.title = "Value above mean", #BREAK9
+  title = paste( #BREAK9
+    "Motor vehicle crash death", #BREAK9
+    "rate per midwestern state, 2018" #BREAK9
+  ), #BREAK9
+  xlab = "Midwestern state", #BREAK9
+  ylab = paste( #BREAK9
+    "Deaths per 100 million VMT", #BREAK9
+    "(normalized)" #BREAK9
+  ) #BREAK9
+) + 
+  geom_hline(
+    yintercept = 0, 
+    linetype = 2, color = "lightgrey" #BREAK9
+  ) 
+```
+
+`r chunk_reveal("ggpubr-demo2", break_type = "non_seq")`
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+```{r ggpubr-demo3, include = FALSE}
+fatal_crash_monthly_counts %>%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %>%
+  ggviolin(
+    x = "crash_year", 
+    y = "fatal_crash_freq",
+    fill = "crash_year", #BREAK2
+    palette = plasma( #BREAK3
+      5, begin = 0.4, end = 0.8 #BREAK3
+    ), #BREAK3
+    add = "boxplot", #BREAK4
+    add.params = list(fill = "white"), #BREAK5
+    title = paste( #BREAK6
+      "U.S. fatal traffic crash", #BREAK6
+      "distribution by month, 2015–19" #BREAK6
+    ), #BREAK6
+    legend.title = "Crash year", #BREAK7
+    xlab = "",  ylab = "" #BREAK8
+  ) + 
+  theme_economist() #BREAK9
+```
+
+`r chunk_reveal("ggpubr-demo3", break_type = "non_seq")`
+
+---
+
+# .purple[Case for violin plots]
+
+> The data in each category is shifting overtime, as can clearly be seen in the "Raw" data view, yet the boxplots remain static. Violin plots are a good method for presenting the distribution of a dataset with more detail than is available with a traditional boxplot. This is not to say that using a boxplot is never appropriate, but if you are going to use a boxplot, it is important to make sure the underlying data is distrubuted in a way that important information is not hidden. – **Justin Matejka & George Fitzmaurice**
+
+```{r violin-vs-boxplot, echo = FALSE}
+knitr::include_graphics("https://d2f99xq7vri1nk.cloudfront.net/BoxViolinSmaller.gif")
+```
+
+.center[
+
+Source: [Autodesk research]("https://www.autodesk.com/research/publications/same-stats-different-graphs")
+
+]
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggpubr website]("https://rpkgs.datanovia.com/ggpubr/index.html") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggpubr-website, echo = FALSE}
+knitr::include_url(
+  "https://rpkgs.datanovia.com/ggpubr/index.html", height = "600px"
+)
+```
+
+]]
+
+
+
 
