@@ -978,6 +978,84 @@ knitr::include_url(
 
 ]]
 
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggridges]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+---
+
+```{r ggridges-demo1, include = FALSE}
+fatal_crash_monthly_counts %>%
+  ggplot(
+    aes(
+      x = fatal_crash_freq, 
+      y = crash_month, 
+      fill = stat(x)
+    )
+  ) + 
+  geom_density_ridges_gradient(
+    scale = 3, 
+    rel_min_height = 0.01
+  ) + 
+  scale_y_discrete(
+    limits = rev(month.abb)
+  ) + 
+  scale_fill_viridis_c(
+    name = "Fatal Crash Freq.", 
+    option = "C"
+  ) + 
+  labs(
+    x = "Fatal crash frequency",
+    y = "Crash month",
+    title = paste(
+      "Motor vehicle fatal crash trend",
+      "by month, 2010–2019"
+    )
+  ) 
+```
+
+`r chunk_reveal("ggridges-demo1")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggridges website]("https://wilkelab.org/ggridges/articles/introduction.html") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggridges-website, echo = FALSE}
+knitr::include_url(
+  "https://wilkelab.org/ggridges/articles/introduction.html", height = "600px"
+)
+```
+
+]]
 
 
 
