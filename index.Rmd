@@ -36,12 +36,16 @@ library(conflicted)
 library(here)
 library(tidyverse)
 conflict_prefer("filter", "dplyr")
+library(glue)
 library(gghighlight)
 library(ggpubr)
 library(ggrepel)
 library(ggalt)
+library(ggridges)
+library(patchwork)
 library(viridisLite)
 library(ggthemes)
+library(ggdark)
 library(flipbookr)
 library(emo)
 
@@ -338,7 +342,7 @@ class: middle center bg-main1
 ---
 
 ```{r ggpubr-demo1, include = FALSE}
-ggdotchart(
+lol_chart <- ggdotchart(
   data = fatal_crash_smry_by_state,
   x = "state", 
   y = "death_rate_vmt",
@@ -364,7 +368,7 @@ ggdotchart(
 )
 ```
 
-`r chunk_reveal("ggpubr-demo1", break_type = "non_seq")`
+`r chunk_reveal("ggpubr-demo1", break_type = "non_seq", left_assign = TRUE)`
 
 ---
 
@@ -375,7 +379,7 @@ class: middle center bg-main1
 ---
 
 ```{r ggpubr-demo2, include = FALSE}
-ggdotchart(
+dev_chart <- ggdotchart(
   data = fatal_crash_smry_by_state,
   x = "state", y = "death_rate_vmt_z",
   sorting = "descending", #BREAK2
@@ -402,10 +406,10 @@ ggdotchart(
   geom_hline(
     yintercept = 0, 
     linetype = 2, color = "lightgrey" #BREAK9
-  ) 
+  )
 ```
 
-`r chunk_reveal("ggpubr-demo2", break_type = "non_seq")`
+`r chunk_reveal("ggpubr-demo2", break_type = "non_seq", left_assign = TRUE)`
 
 ---
 
@@ -474,6 +478,501 @@ class: split-40 white
 ```{r ggpubr-website, echo = FALSE}
 knitr::include_url(
   "https://rpkgs.datanovia.com/ggpubr/index.html", height = "600px"
+)
+```
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[patchwork]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+---
+
+```{r ggpatch-demo0, include = FALSE}
+# Create plots for demo 
+ggplot() ->
+  p1
+
+ggplot() + 
+  theme_bw() ->
+  p2
+```
+
+`r chunk_reveal("ggpatch-demo0")`
+
+---
+
+```{r ggpatch-demo1, include = FALSE}
+# Fill a grid
+p1 + 
+  p2 + 
+  p1 + 
+  p2 -> 
+  ggpatch_grid
+
+# Place side-by-side
+p1 | 
+  p2 | 
+  p1 | 
+  p2 -> 
+  ggpatch_juxta
+
+# Place on top of each other
+p1 / 
+  p2 / 
+  p1 / 
+  p2 -> 
+  ggpatch_updown 
+
+# Hybrids
+(p1 / p2) | 
+  (p1 / p2) -> 
+  ggpatch_hybrid1 
+
+(p1 | p2) / 
+  (p1 | p2) -> 
+  ggpatch_hybrid2
+```
+
+`r chunk_reveal("ggpatch-demo1")`
+
+---
+
+```{r ggpatch-demo2, include = FALSE}
+(p1 | p2) / p1 -> 
+  ggpatch_hybrid3 
+
+p1 | p2 | 
+  p1 / p2 -> 
+  ggpatch_hybrid4 
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -> 
+  ggpatch_star1 
+ggpatch_hybrid4 * theme_dark() -> 
+  ggpatch_star2 
+
+# Ampersand operator
+ggpatch_hybrid3 & theme_dark() -> 
+  ggpatch_amp1 
+ggpatch_hybrid4 & theme_dark() -> 
+  ggpatch_amp2 
+
+# Annotation
+ggpatch_amp2 + 
+  plot_annotation(tag_levels = "A") -> 
+  ggpatch_annot1 
+ggpatch_amp2[[3]] <- ggpatch_amp2[[3]] + 
+  plot_layout(tag_level = "new") 
+ggpatch_amp2 + 
+  plot_annotation(
+    tag_levels = c("A", "1")
+  ) 
+```
+
+`r chunk_reveal("ggpatch-demo2")`
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+```{r ggpatch-demo3, include = FALSE}
+(lol_chart / dev_chart) -> 
+  ggpatch_final 
+
+ggpatch_final[[1]] + 
+  labs(title = NULL, caption = NULL) ->
+  ggpatch_final[[1]] 
+ggpatch_final[[2]] + 
+  labs(title = NULL) -> 
+  ggpatch_final[[2]] 
+
+ggpatch_final + 
+  plot_layout(guides = "collect") + 
+  plot_annotation(
+    title = paste( #BREAK2
+      "Motor vehicle crash death rate", #BREAK2
+      "per midwestern state, 2018" #BREAK2
+    ), #BREAK2
+    caption = "Data source: IIHS", #BREAK3
+    theme = theme_pubr(), #BREAK4
+    tag_levels = "A", #BREAK5
+    tag_prefix = "Fig. " #BREAK6
+  ) & 
+  theme( #BREAK7
+    plot.tag = element_text(size = 10) #BREAK7
+  ) #BREAK7
+```
+
+`r chunk_reveal("ggpatch-demo3")`
+
+---
+
+`r chunk_reveal("ggpatch-demo3", chunk_options = "fig.height = 7", break_type = "non_seq")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [patchwork website]("https://patchwork.data-imaginist.com/index.html") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r patchwork-website, echo = FALSE}
+knitr::include_url(
+  "https://patchwork.data-imaginist.com/index.html", height = "600px"
+)
+```
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggalt]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+.font2[Heavily based on [this blog post](https://rud.is/b/2016/04/17/ggplot2-exercising-with-ggalt-dumbbells/)]
+
+---
+
+```{r ggalt-demo1-1, include = FALSE}
+rename(
+  states_with_alcohol_problem,
+  prop_2017 = alcohol_deaths_prop_2017,
+  prop_2018 = alcohol_deaths_prop_2018
+) %>%
+  mutate(
+    diff = round(
+      prop_2018 - prop_2017, 2
+    ),
+    diff_pretty = paste0(
+      "+", diff * 100
+    ),
+    lab_2017 = ifelse(
+      state == "Montana", 
+      paste0(
+        round(prop_2017 * 100), "%"
+      ),
+      paste0(round(prop_2017 * 100))
+    ),
+    lab_2018 = ifelse(
+      state == "Montana", 
+      paste0(
+        round(prop_2018 * 100), "%"
+      ),
+      paste0(round(prop_2018 * 100))
+    )
+  ) ->
+  ggdumb_df
+```
+
+`r chunk_reveal("ggalt-demo1-1")`
+
+---
+
+```{r ggalt-demo1-2, include = FALSE}
+ggdumb_df %>%
+  ggplot() + 
+  aes(
+    y = state, x = prop_2017, 
+    xend = prop_2018
+  ) + 
+  geom_dumbbell(
+    size = 1.5, 
+    color = "#b2b2b2",
+    size_x = 3,
+    colour_x = "#9fb059",
+    size_xend = 3,
+    colour_xend = "#edae52"
+  ) + 
+  aes(y = fct_reorder(state, diff)) + 
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ), 
+    aes(
+      x = prop_2017, y = state, 
+      label = "Year 2017"
+    ),
+    color = "#9fb059", size = 3, 
+    vjust = -2, fontface = "bold"
+  ) ->
+  ggdumb_part1
+```
+
+`r chunk_reveal("ggalt-demo1-2")`
+
+---
+
+```{r ggalt-demo1-3, include = FALSE}
+ggdumb_part1 +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ), 
+    aes(
+      x = prop_2018, y = state, 
+      label = "Year 2018"
+    ),
+    color = "#edae52", size = 3, 
+    vjust = -2, fontface = "bold"
+  ) + 
+  scale_y_discrete(
+    expand = expansion(0, 1.2)
+  ) + 
+  geom_text(
+    aes(x = prop_2017, y = state,
+        label = lab_2017),
+    color = "#9fb059", size = 2.75, 
+    vjust = 2.5
+  ) +
+  geom_text(
+    aes(x = prop_2018, y = state, 
+        label = lab_2018),
+    color = "#edae52", size = 2.75, 
+    vjust = 2.5
+  ) ->
+  ggdumb_part2
+```
+
+`r chunk_reveal("ggalt-demo1-3")`
+
+---
+
+```{r ggalt-demo1-4, include = FALSE}
+ggdumb_part2 +
+  geom_rect(
+    aes(
+      xmin = 0.55, xmax = 0.675, 
+      ymin = -Inf, ymax = Inf
+    ), 
+    fill = "#efefe3"
+  ) + 
+  geom_text(
+    aes(
+      y = state, x = 0.6125,
+      label = diff_pretty, 
+    ), 
+    fontface = "bold", size = 3
+  ) + 
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ), 
+    aes(
+      x = 0.6125, y = state, 
+      label = "DIFF"
+    ),
+    color = "#7a7d7e", size = 3.1, 
+    vjust = -2, fontface = "bold"
+  ) ->
+  ggdumb_part3
+```
+
+`r chunk_reveal("ggalt-demo1-4")`
+
+---
+
+```{r ggalt-demo1-5, include = FALSE}
+ggdumb_part3 + 
+  scale_x_continuous(
+    expand = c(0, 0), 
+    limits = c(0, 0.675)
+  ) + 
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.major = element_blank()
+  ) +
+  theme(
+    panel.grid.minor = element_blank()
+  ) +
+  theme(
+    panel.border = element_blank()
+  ) ->
+  ggdumb_part4
+```
+
+`r chunk_reveal("ggalt-demo1-5")`
+
+---
+
+```{r ggalt-demo1-6, include = FALSE}
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    )
+  ) +
+  theme(
+    plot.subtitle = element_text(
+      face = "italic", size = 9, 
+      margin = margin(b = 12)
+    )
+  ) +
+  theme(
+    plot.caption = element_text(
+      size = 7, margin = margin(t = 12), 
+      color = "#7a7d7e"
+    )
+  ) +
+  geom_segment(
+    aes(
+      y = state, yend = state, 
+      x = 0, xend = 0.5
+    ), 
+    color = "#b2b2b2", size = 0.15
+  )
+```
+
+`r chunk_reveal("ggalt-demo1-6", chunk_options = "fig.height = 7")`
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+```{r ggalt-demo2-1, include = FALSE}
+fatal_crash_smry_by_state %>%
+  slice_max(death_rate_vmt, n = 2) ->
+  ggspike_df
+
+fatal_crash_smry_by_state %>%
+  ggplot(
+    aes(
+      x = death_rate_vmt, 
+      y = death_rate_pop
+    )
+  ) + 
+  geom_point() +
+  geom_encircle(
+    data = ggspike_df, 
+    color = "red", 
+    s_shape = 0.3, expand = 0.03, 
+    spread = 0.01
+  ) +
+  geom_point(
+    data = ggspike_df, 
+    color = "red"
+  ) +
+  geom_spikelines(
+    data = ggspike_df, 
+    linetype = 2
+  ) ->
+  ggspike_part1
+```
+
+`r chunk_reveal("ggalt-demo2-1")`
+
+---
+
+```{r ggalt-demo2-2, include = FALSE}
+ggspike_part1 +
+  geom_label_repel(
+    data = ggspike_df, 
+    aes(
+      label = glue(
+        "({death_rate_vmt}, ", 
+        "{death_rate_pop})"
+      )
+    ), 
+    box.padding = 1, color = "red"
+  ) + 
+  labs(
+    x = "Deaths per 100 million VMT",
+    y = "Deaths per 100k population",
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    ),
+    caption = "Data source: IIHS"
+  )
+```
+
+`r chunk_reveal("ggalt-demo2-2")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggalt vignette]("https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggalt-vignette, echo = FALSE}
+knitr::include_url(
+  "https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html", height = "600px"
 )
 ```
 
