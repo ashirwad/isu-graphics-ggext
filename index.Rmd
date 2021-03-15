@@ -729,7 +729,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [patchwork website]("https://patchwork.data-imaginist.com/index.html") to learn more 
+## Check [.yellow[patchwork website]](https://patchwork.data-imaginist.com/index.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -738,9 +738,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r patchwork-website, echo = FALSE}
-knitr::include_url(
-  "https://patchwork.data-imaginist.com/index.html", height = "600px"
-)
+include_url("https://patchwork.data-imaginist.com/index.html")
 ```
 
 ]]
@@ -768,11 +766,11 @@ class: middle center bg-main1
 
 .font5[Example 1]
 
-.font2[Heavily based on [this blog post](https://rud.is/b/2016/04/17/ggplot2-exercising-with-ggalt-dumbbells/)]
+.font2[Heavily based on [.yellow[this blog post]](https://rud.is/b/2016/04/17/ggplot2-exercising-with-ggalt-dumbbells/)]
 
 ---
 
-```{r ggalt-demo1-1, include = FALSE}
+```{r ggalt-demo1a, include = FALSE}
 rename(
   states_with_alcohol_problem,
   prop_2017 = alcohol_deaths_prop_2017,
@@ -803,11 +801,11 @@ rename(
   ggdumb_df
 ```
 
-`r chunk_reveal("ggalt-demo1-1")`
+`r chunk_reveal("ggalt-demo1a")`
 
 ---
 
-```{r ggalt-demo1-2, include = FALSE}
+```{r ggalt-demo1b, include = FALSE}
 ggdumb_df %>%
   ggplot() + 
   aes(
@@ -837,11 +835,11 @@ ggdumb_df %>%
   ggdumb_part1
 ```
 
-`r chunk_reveal("ggalt-demo1-2")`
+`r chunk_reveal("ggalt-demo1b")`
 
 ---
 
-```{r ggalt-demo1-3, include = FALSE}
+```{r ggalt-demo1c, include = FALSE}
 ggdumb_part1 +
   geom_text(
     data = filter(
@@ -872,11 +870,11 @@ ggdumb_part1 +
   ggdumb_part2
 ```
 
-`r chunk_reveal("ggalt-demo1-3")`
+`r chunk_reveal("ggalt-demo1c")`
 
 ---
 
-```{r ggalt-demo1-4, include = FALSE}
+```{r ggalt-demo1d, include = FALSE}
 ggdumb_part2 +
   geom_rect(
     aes(
@@ -906,11 +904,11 @@ ggdumb_part2 +
   ggdumb_part3
 ```
 
-`r chunk_reveal("ggalt-demo1-4")`
+`r chunk_reveal("ggalt-demo1d")`
 
 ---
 
-```{r ggalt-demo1-5, include = FALSE}
+```{r ggalt-demo1e, include = FALSE}
 ggdumb_part3 + 
   scale_x_continuous(
     expand = c(0, 0), 
@@ -941,11 +939,11 @@ ggdumb_part3 +
   ggdumb_part4
 ```
 
-`r chunk_reveal("ggalt-demo1-5")`
+`r chunk_reveal("ggalt-demo1e")`
 
 ---
 
-```{r ggalt-demo1-6, include = FALSE}
+```{r ggalt-demo1f, include = FALSE}
 ggdumb_part4 +
   theme(axis.ticks = element_blank()) +
   theme(axis.text.x = element_blank()) +
@@ -975,7 +973,7 @@ ggdumb_part4 +
   )
 ```
 
-`r chunk_reveal("ggalt-demo1-6", chunk_options = "fig.height = 7")`
+`r chunk_reveal("ggalt-demo1f", chunk_options = "fig.height = 7")`
 
 ---
 
@@ -985,7 +983,7 @@ class: middle center bg-main1
 
 ---
 
-```{r ggalt-demo2-1, include = FALSE}
+```{r ggalt-demo2a, include = FALSE}
 fatal_crash_smry_by_state %>%
   slice_max(death_rate_vmt, n = 2) ->
   ggspike_df
@@ -1015,11 +1013,11 @@ fatal_crash_smry_by_state %>%
   ggspike_part1
 ```
 
-`r chunk_reveal("ggalt-demo2-1")`
+`r chunk_reveal("ggalt-demo2a")`
 
 ---
 
-```{r ggalt-demo2-2, include = FALSE}
+```{r ggalt-demo2b, include = FALSE}
 ggspike_part1 +
   geom_label_repel(
     data = ggspike_df, 
@@ -1043,7 +1041,7 @@ ggspike_part1 +
   )
 ```
 
-`r chunk_reveal("ggalt-demo2-2")`
+`r chunk_reveal("ggalt-demo2b")`
 
 ---
 
@@ -1051,7 +1049,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggalt vignette]("https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html") to learn more 
+## Check [.yellow[ggalt vignette]](https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -1060,8 +1058,8 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggalt-vignette, echo = FALSE}
-knitr::include_url(
-  "https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html", height = "600px"
+include_url(
+  "https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html"
 )
 ```
 
