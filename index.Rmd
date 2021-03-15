@@ -393,7 +393,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggrepel website](https://ggrepel.slowkow.com/index.html) to learn more 
+## Check [.yellow[ggrepel website]](https://ggrepel.slowkow.com/index.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -402,10 +402,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggrepel-website, echo = FALSE}
-knitr::include_url(
-  "https://ggrepel.slowkow.com/index.html", 
-  height = "600px"
-)
+include_url("https://ggrepel.slowkow.com/index.html")
 ```
 
 ]]
