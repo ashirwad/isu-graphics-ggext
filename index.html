@@ -1,0 +1,7669 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Getting familiar with ggplot2 extensions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="  Ashirwad Barnwal   " />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/kunoichi.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/panelset-0.2.4/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.4/panelset.js"></script>
+    <script src="libs/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="libs/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon-1.4.1/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain-0.2.4/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain-0.2.4/shareagain.js"></script>
+    <meta name="github-repo" content="ashirwad/isu-graphics-ggext"/>
+    <meta name="twitter:title" content="Getting familiar with ggplot2 extensions"/>
+    <meta name="twitter:description" content="Some of my most frequently used ggplot2 extensions. Presented at ISU Graphics Group meeting in Spring 2021."/>
+    <meta name="twitter:url" content="https://isugg21-ggext.netlify.app"/>
+    <meta name="twitter:image:src" content="https://isugg21-ggext.netlify.app/social-media-card.png"/>
+    <meta name="twitter:image:alt" content="Title slide of Getting familiar with ggplot2 extensions: Some of my most frequently used ggplot2 extensions, presented at ISU Graphics Group meeting in Spring 2021 by Ashirwad Barnwal"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta property="og:title" content="Getting familiar with ggplot2 extensions"/>
+    <meta property="og:description" content="Some of my most frequently used ggplot2 extensions. Presented at ISU Graphics Group meeting in Spring 2021."/>
+    <meta property="og:url" content="https://isugg21-ggext.netlify.app"/>
+    <meta property="og:image" content="https://isugg21-ggext.netlify.app/social-media-card.png"/>
+    <meta property="og:image:alt" content="Title slide of Getting familiar with ggplot2 extensions: Some of my most frequently used ggplot2 extensions, presented at ISU Graphics Group meeting in Spring 2021 by Ashirwad Barnwal"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="en_US"/>
+    <meta property="article:author" content="Ashirwad Barnwal"/>
+    <link rel="stylesheet" href="assets/custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Getting familiar with ggplot2 extensions
+## Some of my most frequently used extensions
+### <br><br>Ashirwad Barnwal   
+### <br>18-Feb-2021<br><br>
+
+---
+
+
+
+
+
+
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[Welcome!]
+]
+
+]]
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+# Overview
+
+&lt;br&gt;&lt;br&gt;
+
+### ggplot2 alone = 💪
+
+### ggplot2 + extensions = 💪 💪
+
+&lt;br&gt;
+
+### In this talk, I will introduce some of my .yellow[most frequently used] ggplot2 extensions.
+
+&lt;br&gt;
+
+### Let's get started!
+
+]]
+
+.column[.content.vmiddle.center[
+
+&lt;iframe src="https://exts.ggplot2.tidyverse.org/gallery/" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+# .purple[Data description]
+
+.panelset[
+
+.panel[.panel-name[Fatal crash summary by state, 2018]
+
+
+```r
+# Only midwest
+glimpse(fatal_crash_smry_by_state)
+```
+
+```
+  Rows: 12
+  Columns: 9
+  $ state                     &lt;chr&gt; "Illinois", "Indiana", "Iowa", "Kansas", ...
+  $ population                &lt;dbl&gt; 12741080, 6691878, 3156145, 2911505, 9995...
+  $ vmt_millions              &lt;dbl&gt; 107954, 81529, 33282, 32190, 102398, 6043...
+  $ fatal_crashes             &lt;dbl&gt; 948, 774, 291, 366, 905, 349, 848, 201, 9...
+  $ deaths                    &lt;dbl&gt; 1031, 858, 318, 404, 974, 381, 921, 230, ...
+  $ death_rate_pop            &lt;dbl&gt; 8.1, 12.8, 10.1, 13.9, 9.7, 6.8, 15.0, 11...
+  $ death_rate_vmt            &lt;dbl&gt; 0.96, 1.05, 0.96, 1.26, 0.95, 0.63, 1.20,...
+  $ death_rate_vmt_above_mean &lt;chr&gt; "No", "Yes", "No", "Yes", "No", "No", "Ye...
+  $ death_rate_vmt_z          &lt;dbl&gt; -0.36, 0.11, -0.36, 1.23, -0.42, -2.11, 0...
+```
+
+.center[Data source: [Insurance Institute for Highway Safety (IIHS)](https://www.iihs.org/topics/fatality-statistics/detail/state-by-state#fatal-crash-totals)]
+
+]
+
+.panel[.panel-name[Fatal crash monthly counts, 2010-19]
+
+
+```r
+# Across the United States
+glimpse(fatal_crash_monthly_counts)
+```
+
+```
+  Rows: 120
+  Columns: 3
+  $ crash_year       &lt;dbl&gt; 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 20...
+  $ crash_month      &lt;chr&gt; "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "...
+  $ fatal_crash_freq &lt;dbl&gt; 2101, 1830, 2213, 2552, 2704, 2569, 2852, 2825, 27...
+```
+
+.center[Data source: [Fatality Analysis Reporting System (FARS)](https://cdan.dot.gov/query)]
+
+]
+
+.panel[.panel-name[States with alcohol problem, 2017-18]
+
+
+```r
+# Across the United States
+glimpse(states_with_alcohol_problem)
+```
+
+```
+  Rows: 16
+  Columns: 3
+  $ state                    &lt;chr&gt; "Alaska", "Arizona", "Colorado", "Georgia"...
+  $ alcohol_deaths_prop_2017 &lt;dbl&gt; 0.28, 0.27, 0.27, 0.23, 0.28, 0.23, 0.22, ...
+  $ alcohol_deaths_prop_2018 &lt;dbl&gt; 0.36, 0.28, 0.30, 0.25, 0.30, 0.28, 0.25, ...
+```
+
+.center[Data source: [Traffic safety facts (Table 7)](https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/812826)]
+
+]
+
+]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[gghighlight]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+*ggplot(fatal_crash_smry_by_state)
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+* aes(x = death_rate_vmt, y = state)
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+* geom_point()
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+* aes(
+*   y = fct_reorder(
+*     state, death_rate_vmt
+*   )
+* )
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+* geom_segment(
+*   aes(
+*     x = 0, y = state,
+*     xend = death_rate_vmt,
+*     yend = state
+*   )
+* )
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = 0, y = state,
+      xend = death_rate_vmt,
+      yend = state
+    )
+  ) +
+* labs(
+*   x = paste(
+*     "Deaths per 100 million",
+*     "vehicle miles traveled"
+*   )
+* )
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = 0, y = state,
+      xend = death_rate_vmt,
+      yend = state
+    )
+  ) +
+  labs(
+    x = paste(
+      "Deaths per 100 million",
+      "vehicle miles traveled"
+    )
+  ) +
+* labs(y = "Midwestern state")
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = 0, y = state,
+      xend = death_rate_vmt,
+      yend = state
+    )
+  ) +
+  labs(
+    x = paste(
+      "Deaths per 100 million",
+      "vehicle miles traveled"
+    )
+  ) +
+  labs(y = "Midwestern state") +
+* labs(
+*   title = paste(
+*     "Motor vehicle crash death rate",
+*     "per midwestern state, 2018"
+*   )
+* )
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = 0, y = state,
+      xend = death_rate_vmt,
+      yend = state
+    )
+  ) +
+  labs(
+    x = paste(
+      "Deaths per 100 million",
+      "vehicle miles traveled"
+    )
+  ) +
+  labs(y = "Midwestern state") +
+  labs(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    )
+  ) +
+* labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(x = death_rate_vmt, y = state) +
+  geom_point() +
+  aes(
+    y = fct_reorder(
+      state, death_rate_vmt
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = 0, y = state,
+      xend = death_rate_vmt,
+      yend = state
+    )
+  ) +
+  labs(
+    x = paste(
+      "Deaths per 100 million",
+      "vehicle miles traveled"
+    )
+  ) +
+  labs(y = "Midwestern state") +
+  labs(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS") +
+* gghighlight(state == "Iowa")
+```
+]
+ 
+.panel2-gghigh-demo1-auto[
+&lt;img src="index_files/figure-html/gghigh-demo1_auto_10_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-gghigh-demo1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-gghigh-demo1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-gghigh-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+*ggplot(fatal_crash_monthly_counts)
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+* aes(
+*   x = crash_month,
+*   y = fatal_crash_freq
+* )
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+* aes(group = crash_year)
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+* geom_line()
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+* scale_x_discrete(limits = month.abb)
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+* aes(color = factor(crash_year))
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+* labs(x = "Crash month")
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+  labs(x = "Crash month") +
+* labs(y = "Fatal crash frequency")
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+  labs(x = "Crash month") +
+  labs(y = "Fatal crash frequency") +
+* labs(color = "Crash year")
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+  labs(x = "Crash month") +
+  labs(y = "Fatal crash frequency") +
+  labs(color = "Crash year") +
+* labs(
+*   title = paste(
+*     "Motor vehicle fatal crash trend",
+*     "in the U.S. by month, 2010–2019"
+*   )
+* )
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_10_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+  labs(x = "Crash month") +
+  labs(y = "Fatal crash frequency") +
+  labs(color = "Crash year") +
+  labs(
+    title = paste(
+      "Motor vehicle fatal crash trend",
+      "in the U.S. by month, 2010–2019"
+    )
+  ) +
+* labs(caption = "Data source: FARS")
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_11_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-gghigh-demo2-auto[
+
+```r
+ggplot(fatal_crash_monthly_counts) +
+  aes(
+    x = crash_month,
+    y = fatal_crash_freq
+  ) +
+  aes(group = crash_year) +
+  geom_line() +
+  scale_x_discrete(limits = month.abb) +
+  aes(color = factor(crash_year)) +
+  labs(x = "Crash month") +
+  labs(y = "Fatal crash frequency") +
+  labs(color = "Crash year") +
+  labs(
+    title = paste(
+      "Motor vehicle fatal crash trend",
+      "in the U.S. by month, 2010–2019"
+    )
+  ) +
+  labs(caption = "Data source: FARS") +
+* gghighlight(
+*   max(fatal_crash_freq) &gt; 3000
+* )
+```
+]
+ 
+.panel2-gghigh-demo2-auto[
+&lt;img src="index_files/figure-html/gghigh-demo2_auto_12_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-gghigh-demo2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-gghigh-demo2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-gghigh-demo2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[gghighlight website]](https://yutannihilation.github.io/gghighlight/index.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://yutannihilation.github.io/gghighlight/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggrepel]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+*ggplot(fatal_crash_smry_by_state)
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+* aes(
+*   x = death_rate_pop,
+*   y = death_rate_vmt
+* )
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+* geom_point()
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+* ggrepel_baseplot
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+*ggrepel_baseplot
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+* geom_text(aes(label = state))
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+* ggtext_ugly
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+*ggrepel_baseplot
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+* geom_text_repel(
+*   aes(label = state), seed = 123
+* )
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+* ggtext_pretty
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+*ggrepel_baseplot
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_11_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+ggrepel_baseplot +
+* geom_label(aes(label = state))
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_12_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+ggrepel_baseplot +
+  geom_label(aes(label = state)) -&gt;
+* gglabel_ugly
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+ggrepel_baseplot +
+  geom_label(aes(label = state)) -&gt;
+  gglabel_ugly
+
+*ggrepel_baseplot
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_14_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+ggrepel_baseplot +
+  geom_label(aes(label = state)) -&gt;
+  gglabel_ugly
+
+ggrepel_baseplot +
+* geom_label_repel(
+*   aes(label = state), seed = 123
+* )
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+&lt;img src="index_files/figure-html/ggrepel-demo1_auto_15_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo1-auto[
+
+```r
+ggplot(fatal_crash_smry_by_state) +
+  aes(
+    x = death_rate_pop,
+    y = death_rate_vmt
+  ) +
+  geom_point() -&gt;
+  ggrepel_baseplot
+
+ggrepel_baseplot +
+  geom_text(aes(label = state)) -&gt;
+  ggtext_ugly
+
+ggrepel_baseplot +
+  geom_text_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+  ggtext_pretty
+
+ggrepel_baseplot +
+  geom_label(aes(label = state)) -&gt;
+  gglabel_ugly
+
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state), seed = 123
+  ) -&gt;
+* gglabel_pretty
+```
+]
+ 
+.panel2-ggrepel-demo1-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggrepel-demo1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggrepel-demo1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggrepel-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+*   nudge_x = 0.2,
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+    nudge_x = 0.2,
+*   box.padding = 1,
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+    nudge_x = 0.2,
+    box.padding = 1,
+*   segment.curvature = -0.2,
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+    nudge_x = 0.2,
+    box.padding = 1,
+    segment.curvature = -0.2,
+*   segment.ncp = 5,
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggrepel-demo2-non_seq[
+
+```r
+ggrepel_baseplot +
+  geom_label_repel(
+    aes(label = state),
+    seed = 123,
+    nudge_x = 0.2,
+    box.padding = 1,
+    segment.curvature = -0.2,
+    segment.ncp = 5,
+*   segment.angle = 30
+  ) +
+  geom_smooth(
+    method = "lm", se = FALSE
+  ) +
+  labs(
+    x = "Deaths per 100k population"
+  ) +
+  labs(
+    y = "Deaths per 100 million VMT"
+  ) +
+  labs(
+    title = paste(
+      "Relationship between motor",
+      "vehicle crash death rates",
+      "for midwest, 2018"
+    )
+  ) +
+  labs(caption = "Data source: IIHS")
+```
+]
+ 
+.panel2-ggrepel-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggrepel-demo2_non_seq_06_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggrepel-demo2-non_seq {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggrepel-demo2-non_seq {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggrepel-demo2-non_seq {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggrepel website]](https://ggrepel.slowkow.com/index.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://ggrepel.slowkow.com/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggpubr]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1a]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+* sorting = "descending",
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+* add = "segment",
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+* add.params = list(size = 1),
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 1),
+* dot.size = 9,
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 1),
+  dot.size = 9,
+* rotate = TRUE,
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 1),
+  dot.size = 9,
+  rotate = TRUE,
+* color = "death_rate_vmt_above_mean",
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 1),
+  dot.size = 9,
+  rotate = TRUE,
+  color = "death_rate_vmt_above_mean",
+* label = "death_rate_vmt",
+* font.label = list(
+*   color = "white", size = 9,
+*   vjust = 0.5
+* ),
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo1-non_seq[
+
+```r
+lol_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state",
+  y = "death_rate_vmt",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 1),
+  dot.size = 9,
+  rotate = TRUE,
+  color = "death_rate_vmt_above_mean",
+  label = "death_rate_vmt",
+  font.label = list(
+    color = "white", size = 9,
+    vjust = 0.5
+  ),
+* legend.title = "Value above mean",
+* title = paste(
+*   "Motor vehicle crash death rate",
+*   "per midwestern state, 2018"
+* ),
+* xlab = "Midwestern state",
+* ylab = "Deaths per 100 million VMT",
+* caption = "Data source: IIHS"
+)
+
+lol_chart
+```
+]
+ 
+.panel2-ggpubr-demo1-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo1_non_seq_09_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpubr-demo1-non_seq {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpubr-demo1-non_seq {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpubr-demo1-non_seq {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1b]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+* sorting = "descending",
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+* add = "segment",
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+* add.params = list(size = 2),
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 2),
+* dot.size = 9, rotate = TRUE,
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 2),
+  dot.size = 9, rotate = TRUE,
+* color = "death_rate_vmt_above_mean",
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 2),
+  dot.size = 9, rotate = TRUE,
+  color = "death_rate_vmt_above_mean",
+* label = "death_rate_vmt_z",
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 2),
+  dot.size = 9, rotate = TRUE,
+  color = "death_rate_vmt_above_mean",
+  label = "death_rate_vmt_z",
+* font.label = list(
+*   color = "white", size = 9,
+*   vjust = 0.5
+* ),
+) +
+  geom_hline(
+    yintercept = 0,
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo2-non_seq[
+
+```r
+dev_chart &lt;- ggdotchart(
+  data = fatal_crash_smry_by_state,
+  x = "state", y = "death_rate_vmt_z",
+  sorting = "descending",
+  add = "segment",
+  add.params = list(size = 2),
+  dot.size = 9, rotate = TRUE,
+  color = "death_rate_vmt_above_mean",
+  label = "death_rate_vmt_z",
+  font.label = list(
+    color = "white", size = 9,
+    vjust = 0.5
+  ),
+* legend.title = "Value above mean",
+* title = paste(
+*   "Motor vehicle crash death",
+*   "rate per midwestern state, 2018"
+* ),
+* xlab = "Midwestern state",
+* ylab = paste(
+*   "Deaths per 100 million VMT",
+*   "(normalized)"
+* )
+) +
+  geom_hline(
+    yintercept = 0,
+*   linetype = 2, color = "lightgrey"
+  )
+
+dev_chart
+```
+]
+ 
+.panel2-ggpubr-demo2-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo2_non_seq_09_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpubr-demo2-non_seq {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpubr-demo2-non_seq {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpubr-demo2-non_seq {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+*   fill = "crash_year",
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+*   palette = plasma(
+*     5, begin = 0.4, end = 0.8
+*   ),
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+*   add = "boxplot",
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+    add = "boxplot",
+*   add.params = list(fill = "white"),
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+    add = "boxplot",
+    add.params = list(fill = "white"),
+*   title = paste(
+*     "U.S. fatal traffic crash",
+*     "distribution by month, 2015–19"
+*   ),
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+    add = "boxplot",
+    add.params = list(fill = "white"),
+    title = paste(
+      "U.S. fatal traffic crash",
+      "distribution by month, 2015–19"
+    ),
+*   legend.title = "Crash year",
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+    add = "boxplot",
+    add.params = list(fill = "white"),
+    title = paste(
+      "U.S. fatal traffic crash",
+      "distribution by month, 2015–19"
+    ),
+    legend.title = "Crash year",
+*   xlab = "",  ylab = ""
+  )
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpubr-demo3-non_seq[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  filter(
+    crash_year %in% c(2015:2019)
+  ) %&gt;%
+  ggviolin(
+    x = "crash_year",
+    y = "fatal_crash_freq",
+    fill = "crash_year",
+    palette = plasma(
+      5, begin = 0.4, end = 0.8
+    ),
+    add = "boxplot",
+    add.params = list(fill = "white"),
+    title = paste(
+      "U.S. fatal traffic crash",
+      "distribution by month, 2015–19"
+    ),
+    legend.title = "Crash year",
+    xlab = "",  ylab = ""
+  ) +
+* theme_economist()
+```
+]
+ 
+.panel2-ggpubr-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpubr-demo3_non_seq_09_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpubr-demo3-non_seq {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpubr-demo3-non_seq {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpubr-demo3-non_seq {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+# .purple[Case for violin plots]
+
+&gt; The data in each category is shifting overtime, as can clearly be seen in the "Raw" data view, yet the boxplots remain static. Violin plots are a good method for presenting the distribution of a dataset with more detail than is available with a traditional boxplot. This is not to say that using a boxplot is never appropriate, but if you are going to use a boxplot, it is important to make sure the underlying data is distrubuted in a way that important information is not hidden. – **Justin Matejka &amp; George Fitzmaurice**
+
+&lt;img src="https://d2f99xq7vri1nk.cloudfront.net/BoxViolinSmaller.gif" width="100%" /&gt;
+
+.center[
+
+Source: [.blue[Autodesk research]](https://www.autodesk.com/research/publications/same-stats-different-graphs)
+
+]
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggpubr website]](https://rpkgs.datanovia.com/ggpubr/index.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://rpkgs.datanovia.com/ggpubr/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[patchwork]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpatch-demo0-auto[
+
+```r
+# Create plots for demo
+*ggplot()
+```
+]
+ 
+.panel2-ggpatch-demo0-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo0_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo0-auto[
+
+```r
+# Create plots for demo
+ggplot() -&gt;
+* p1
+```
+]
+ 
+.panel2-ggpatch-demo0-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo0-auto[
+
+```r
+# Create plots for demo
+ggplot() -&gt;
+  p1
+
+*ggplot()
+```
+]
+ 
+.panel2-ggpatch-demo0-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo0_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo0-auto[
+
+```r
+# Create plots for demo
+ggplot() -&gt;
+  p1
+
+ggplot() +
+* theme_bw()
+```
+]
+ 
+.panel2-ggpatch-demo0-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo0_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo0-auto[
+
+```r
+# Create plots for demo
+ggplot() -&gt;
+  p1
+
+ggplot() +
+  theme_bw() -&gt;
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo0-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggpatch-demo0-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpatch-demo0-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpatch-demo0-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+*p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+* p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+* ggpatch_grid
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+*p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+* p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+* ggpatch_juxta
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+*p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_11_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_12_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+* p1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_13_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+* p2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_14_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+* ggpatch_updown
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+*(p1 / p2)
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_16_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+(p1 / p2) |
+* (p1 / p2)
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_17_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+(p1 / p2) |
+  (p1 / p2) -&gt;
+* ggpatch_hybrid1
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+(p1 / p2) |
+  (p1 / p2) -&gt;
+  ggpatch_hybrid1
+
+*(p1 | p2)
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_19_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+(p1 / p2) |
+  (p1 / p2) -&gt;
+  ggpatch_hybrid1
+
+(p1 | p2) /
+* (p1 | p2)
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo1_auto_20_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo1-auto[
+
+```r
+# Fill a grid
+p1 +
+  p2 +
+  p1 +
+  p2 -&gt;
+  ggpatch_grid
+
+# Place side-by-side
+p1 |
+  p2 |
+  p1 |
+  p2 -&gt;
+  ggpatch_juxta
+
+# Place on top of each other
+p1 /
+  p2 /
+  p1 /
+  p2 -&gt;
+  ggpatch_updown
+
+# Hybrids
+(p1 / p2) |
+  (p1 / p2) -&gt;
+  ggpatch_hybrid1
+
+(p1 | p2) /
+  (p1 | p2) -&gt;
+* ggpatch_hybrid2
+```
+]
+ 
+.panel2-ggpatch-demo1-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggpatch-demo1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpatch-demo1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpatch-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+*(p1 | p2) / p1
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+* ggpatch_hybrid3
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+*p1 | p2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+* p1 / p2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+* ggpatch_hybrid4
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+*ggpatch_hybrid3 * theme_dark()
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+* ggpatch_star1
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+*ggpatch_hybrid4 * theme_dark()
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+* ggpatch_star2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+*ggpatch_hybrid3 &amp; theme_dark()
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_10_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+* ggpatch_amp1
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+*ggpatch_hybrid4 &amp; theme_dark()
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_12_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+* ggpatch_amp2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+*ggpatch_amp2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_14_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+* plot_annotation(tag_levels = "A")
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_15_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+  plot_annotation(tag_levels = "A") -&gt;
+* ggpatch_annot1
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+  plot_annotation(tag_levels = "A") -&gt;
+  ggpatch_annot1
+*ggpatch_amp2[[3]] &lt;- ggpatch_amp2[[3]]
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+  plot_annotation(tag_levels = "A") -&gt;
+  ggpatch_annot1
+ggpatch_amp2[[3]] &lt;- ggpatch_amp2[[3]] +
+* plot_layout(tag_level = "new")
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+  plot_annotation(tag_levels = "A") -&gt;
+  ggpatch_annot1
+ggpatch_amp2[[3]] &lt;- ggpatch_amp2[[3]] +
+  plot_layout(tag_level = "new")
+*ggpatch_amp2
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_19_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo2-auto[
+
+```r
+(p1 | p2) / p1 -&gt;
+  ggpatch_hybrid3
+
+p1 | p2 |
+  p1 / p2 -&gt;
+  ggpatch_hybrid4
+
+# Asterisk operator
+ggpatch_hybrid3 * theme_dark() -&gt;
+  ggpatch_star1
+ggpatch_hybrid4 * theme_dark() -&gt;
+  ggpatch_star2
+
+# Ampersand operator
+ggpatch_hybrid3 &amp; theme_dark() -&gt;
+  ggpatch_amp1
+ggpatch_hybrid4 &amp; theme_dark() -&gt;
+  ggpatch_amp2
+
+# Annotation
+ggpatch_amp2 +
+  plot_annotation(tag_levels = "A") -&gt;
+  ggpatch_annot1
+ggpatch_amp2[[3]] &lt;- ggpatch_amp2[[3]] +
+  plot_layout(tag_level = "new")
+ggpatch_amp2 +
+* plot_annotation(
+*   tag_levels = c("A", "1")
+* )
+```
+]
+ 
+.panel2-ggpatch-demo2-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo2_auto_20_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpatch-demo2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpatch-demo2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpatch-demo2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+*(lol_chart / dev_chart)
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+* ggpatch_final
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+*ggpatch_final[[1]]
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+* labs(title = NULL, caption = NULL)
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+* ggpatch_final[[1]]
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+*ggpatch_final[[2]]
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+* labs(title = NULL)
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+* ggpatch_final[[2]]
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+*ggpatch_final
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+* plot_layout(guides = "collect")
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_10_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+* plot_annotation(
+*   title = paste(
+*     "Motor vehicle crash death rate",
+*     "per midwestern state, 2018"
+*   ),
+*   caption = "Data source: IIHS",
+*   theme = theme_pubr(),
+*   tag_levels = "A",
+*   tag_prefix = "Fig. "
+* )
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_11_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-auto[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+    caption = "Data source: IIHS",
+    theme = theme_pubr(),
+    tag_levels = "A",
+    tag_prefix = "Fig. "
+  ) &amp;
+* theme(
+*   plot.tag = element_text(size = 10)
+* )
+```
+]
+ 
+.panel2-ggpatch-demo3-auto[
+&lt;img src="index_files/figure-html/ggpatch-demo3_auto_12_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpatch-demo3-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpatch-demo3-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpatch-demo3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+*   title = paste(
+*     "Motor vehicle crash death rate",
+*     "per midwestern state, 2018"
+*   ),
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+*   caption = "Data source: IIHS",
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+    caption = "Data source: IIHS",
+*   theme = theme_pubr(),
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+    caption = "Data source: IIHS",
+    theme = theme_pubr(),
+*   tag_levels = "A",
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+    caption = "Data source: IIHS",
+    theme = theme_pubr(),
+    tag_levels = "A",
+*   tag_prefix = "Fig. "
+  )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggpatch-demo3-non_seq[
+
+```r
+(lol_chart / dev_chart) -&gt;
+  ggpatch_final
+
+ggpatch_final[[1]] +
+  labs(title = NULL, caption = NULL) -&gt;
+  ggpatch_final[[1]]
+ggpatch_final[[2]] +
+  labs(title = NULL) -&gt;
+  ggpatch_final[[2]]
+
+ggpatch_final +
+  plot_layout(guides = "collect") +
+  plot_annotation(
+    title = paste(
+      "Motor vehicle crash death rate",
+      "per midwestern state, 2018"
+    ),
+    caption = "Data source: IIHS",
+    theme = theme_pubr(),
+    tag_levels = "A",
+    tag_prefix = "Fig. "
+  ) &amp;
+* theme(
+*   plot.tag = element_text(size = 10)
+* )
+```
+]
+ 
+.panel2-ggpatch-demo3-non_seq[
+&lt;img src="index_files/figure-html/ggpatch-demo3_non_seq_07_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggpatch-demo3-non_seq {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggpatch-demo3-non_seq {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggpatch-demo3-non_seq {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[patchwork website]](https://patchwork.data-imaginist.com/index.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://patchwork.data-imaginist.com/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggalt]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 1]
+
+.font2[Heavily based on [.yellow[this blog post]](https://rud.is/b/2016/04/17/ggplot2-exercising-with-ggalt-dumbbells/)]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1a-auto[
+
+```r
+*rename(
+* states_with_alcohol_problem,
+* prop_2017 = alcohol_deaths_prop_2017,
+* prop_2018 = alcohol_deaths_prop_2018
+*) 
+```
+]
+ 
+.panel2-ggalt-demo1a-auto[
+
+```
+  # A tibble: 16 x 3
+     state          prop_2017 prop_2018
+     &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;
+   1 Alaska             0.28      0.36 
+   2 Arizona            0.27      0.28 
+   3 Colorado           0.27      0.3  
+   4 Georgia            0.23      0.25 
+   5 Maine              0.28      0.3  
+   6 Minnesota          0.23      0.28 
+   7 Mississippi        0.22      0.25 
+   8 Montana            0.31      0.43 
+   9 New Hampshire      0.26      0.33 
+  10 New Jersey         0.19      0.22 
+  11 New York           0.290     0.33 
+  12 North Carolina     0.28      0.290
+  13 South Dakota       0.28      0.35 
+  14 Utah               0.2       0.23 
+  15 Wisconsin          0.31      0.34 
+  16 Puerto Rico        0.31      0.4
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1a-auto[
+
+```r
+rename(
+  states_with_alcohol_problem,
+  prop_2017 = alcohol_deaths_prop_2017,
+  prop_2018 = alcohol_deaths_prop_2018
+) %&gt;%
+* mutate(
+*   diff = round(
+*     prop_2018 - prop_2017, 2
+*   ),
+*   diff_pretty = paste0(
+*     "+", diff * 100
+*   ),
+*   lab_2017 = ifelse(
+*     state == "Montana",
+*     paste0(
+*       round(prop_2017 * 100), "%"
+*     ),
+*     paste0(round(prop_2017 * 100))
+*   ),
+*   lab_2018 = ifelse(
+*     state == "Montana",
+*     paste0(
+*       round(prop_2018 * 100), "%"
+*     ),
+*     paste0(round(prop_2018 * 100))
+*   )
+* )
+```
+]
+ 
+.panel2-ggalt-demo1a-auto[
+
+```
+  # A tibble: 16 x 7
+     state          prop_2017 prop_2018  diff diff_pretty lab_2017 lab_2018
+     &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;   
+   1 Alaska             0.28      0.36   0.08 +8          28       36      
+   2 Arizona            0.27      0.28   0.01 +1          27       28      
+   3 Colorado           0.27      0.3    0.03 +3          27       30      
+   4 Georgia            0.23      0.25   0.02 +2          23       25      
+   5 Maine              0.28      0.3    0.02 +2          28       30      
+   6 Minnesota          0.23      0.28   0.05 +5          23       28      
+   7 Mississippi        0.22      0.25   0.03 +3          22       25      
+   8 Montana            0.31      0.43   0.12 +12         31%      43%     
+   9 New Hampshire      0.26      0.33   0.07 +7          26       33      
+  10 New Jersey         0.19      0.22   0.03 +3          19       22      
+  11 New York           0.290     0.33   0.04 +4          29       33      
+  12 North Carolina     0.28      0.290  0.01 +1          28       29      
+  13 South Dakota       0.28      0.35   0.07 +7          28       35      
+  14 Utah               0.2       0.23   0.03 +3          20       23      
+  15 Wisconsin          0.31      0.34   0.03 +3          31       34      
+  16 Puerto Rico        0.31      0.4    0.09 +9          31       40
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1a-auto[
+
+```r
+rename(
+  states_with_alcohol_problem,
+  prop_2017 = alcohol_deaths_prop_2017,
+  prop_2018 = alcohol_deaths_prop_2018
+) %&gt;%
+  mutate(
+    diff = round(
+      prop_2018 - prop_2017, 2
+    ),
+    diff_pretty = paste0(
+      "+", diff * 100
+    ),
+    lab_2017 = ifelse(
+      state == "Montana",
+      paste0(
+        round(prop_2017 * 100), "%"
+      ),
+      paste0(round(prop_2017 * 100))
+    ),
+    lab_2018 = ifelse(
+      state == "Montana",
+      paste0(
+        round(prop_2018 * 100), "%"
+      ),
+      paste0(round(prop_2018 * 100))
+    )
+  ) -&gt;
+* ggdumb_df
+```
+]
+ 
+.panel2-ggalt-demo1a-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1a-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1a-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1a-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+*ggdumb_df
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+
+```
+  # A tibble: 16 x 7
+     state          prop_2017 prop_2018  diff diff_pretty lab_2017 lab_2018
+     &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;   
+   1 Alaska             0.28      0.36   0.08 +8          28       36      
+   2 Arizona            0.27      0.28   0.01 +1          27       28      
+   3 Colorado           0.27      0.3    0.03 +3          27       30      
+   4 Georgia            0.23      0.25   0.02 +2          23       25      
+   5 Maine              0.28      0.3    0.02 +2          28       30      
+   6 Minnesota          0.23      0.28   0.05 +5          23       28      
+   7 Mississippi        0.22      0.25   0.03 +3          22       25      
+   8 Montana            0.31      0.43   0.12 +12         31%      43%     
+   9 New Hampshire      0.26      0.33   0.07 +7          26       33      
+  10 New Jersey         0.19      0.22   0.03 +3          19       22      
+  11 New York           0.290     0.33   0.04 +4          29       33      
+  12 North Carolina     0.28      0.290  0.01 +1          28       29      
+  13 South Dakota       0.28      0.35   0.07 +7          28       35      
+  14 Utah               0.2       0.23   0.03 +3          20       23      
+  15 Wisconsin          0.31      0.34   0.03 +3          31       34      
+  16 Puerto Rico        0.31      0.4    0.09 +9          31       40
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1b_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+  ggplot() +
+* aes(
+*   y = state, x = prop_2017,
+*   xend = prop_2018
+* )
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1b_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+  ggplot() +
+  aes(
+    y = state, x = prop_2017,
+    xend = prop_2018
+  ) +
+* geom_dumbbell(
+*   size = 1.5,
+*   color = "#b2b2b2",
+*   size_x = 3,
+*   colour_x = "#9fb059",
+*   size_xend = 3,
+*   colour_xend = "#edae52"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1b_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+  ggplot() +
+  aes(
+    y = state, x = prop_2017,
+    xend = prop_2018
+  ) +
+  geom_dumbbell(
+    size = 1.5,
+    color = "#b2b2b2",
+    size_x = 3,
+    colour_x = "#9fb059",
+    size_xend = 3,
+    colour_xend = "#edae52"
+  ) +
+* aes(y = fct_reorder(state, diff))
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1b_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+  ggplot() +
+  aes(
+    y = state, x = prop_2017,
+    xend = prop_2018
+  ) +
+  geom_dumbbell(
+    size = 1.5,
+    color = "#b2b2b2",
+    size_x = 3,
+    colour_x = "#9fb059",
+    size_xend = 3,
+    colour_xend = "#edae52"
+  ) +
+  aes(y = fct_reorder(state, diff)) +
+* geom_text(
+*   data = filter(
+*     ggdumb_df, state == "Montana"
+*   ),
+*   aes(
+*     x = prop_2017, y = state,
+*     label = "Year 2017"
+*   ),
+*   color = "#9fb059", size = 3,
+*   vjust = -2, fontface = "bold"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1b_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1b-auto[
+
+```r
+ggdumb_df %&gt;%
+  ggplot() +
+  aes(
+    y = state, x = prop_2017,
+    xend = prop_2018
+  ) +
+  geom_dumbbell(
+    size = 1.5,
+    color = "#b2b2b2",
+    size_x = 3,
+    colour_x = "#9fb059",
+    size_xend = 3,
+    colour_xend = "#edae52"
+  ) +
+  aes(y = fct_reorder(state, diff)) +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = prop_2017, y = state,
+      label = "Year 2017"
+    ),
+    color = "#9fb059", size = 3,
+    vjust = -2, fontface = "bold"
+  ) -&gt;
+* ggdumb_part1
+```
+]
+ 
+.panel2-ggalt-demo1b-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1b-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1b-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1b-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+*ggdumb_part1
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1c_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+ggdumb_part1 +
+* geom_text(
+*   data = filter(
+*     ggdumb_df, state == "Montana"
+*   ),
+*   aes(
+*     x = prop_2018, y = state,
+*     label = "Year 2018"
+*   ),
+*   color = "#edae52", size = 3,
+*   vjust = -2, fontface = "bold"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1c_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+ggdumb_part1 +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = prop_2018, y = state,
+      label = "Year 2018"
+    ),
+    color = "#edae52", size = 3,
+    vjust = -2, fontface = "bold"
+  ) +
+* scale_y_discrete(
+*   expand = expansion(0, 1.2)
+* )
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1c_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+ggdumb_part1 +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = prop_2018, y = state,
+      label = "Year 2018"
+    ),
+    color = "#edae52", size = 3,
+    vjust = -2, fontface = "bold"
+  ) +
+  scale_y_discrete(
+    expand = expansion(0, 1.2)
+  ) +
+* geom_text(
+*   aes(x = prop_2017, y = state,
+*       label = lab_2017),
+*   color = "#9fb059", size = 2.75,
+*   vjust = 2.5
+* )
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1c_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+ggdumb_part1 +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = prop_2018, y = state,
+      label = "Year 2018"
+    ),
+    color = "#edae52", size = 3,
+    vjust = -2, fontface = "bold"
+  ) +
+  scale_y_discrete(
+    expand = expansion(0, 1.2)
+  ) +
+  geom_text(
+    aes(x = prop_2017, y = state,
+        label = lab_2017),
+    color = "#9fb059", size = 2.75,
+    vjust = 2.5
+  ) +
+* geom_text(
+*   aes(x = prop_2018, y = state,
+*       label = lab_2018),
+*   color = "#edae52", size = 2.75,
+*   vjust = 2.5
+* )
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1c_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1c-auto[
+
+```r
+ggdumb_part1 +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = prop_2018, y = state,
+      label = "Year 2018"
+    ),
+    color = "#edae52", size = 3,
+    vjust = -2, fontface = "bold"
+  ) +
+  scale_y_discrete(
+    expand = expansion(0, 1.2)
+  ) +
+  geom_text(
+    aes(x = prop_2017, y = state,
+        label = lab_2017),
+    color = "#9fb059", size = 2.75,
+    vjust = 2.5
+  ) +
+  geom_text(
+    aes(x = prop_2018, y = state,
+        label = lab_2018),
+    color = "#edae52", size = 2.75,
+    vjust = 2.5
+  ) -&gt;
+* ggdumb_part2
+```
+]
+ 
+.panel2-ggalt-demo1c-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1c-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1c-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1c-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1d-auto[
+
+```r
+*ggdumb_part2
+```
+]
+ 
+.panel2-ggalt-demo1d-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1d_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1d-auto[
+
+```r
+ggdumb_part2 +
+* geom_rect(
+*   aes(
+*     xmin = 0.55, xmax = 0.675,
+*     ymin = -Inf, ymax = Inf
+*   ),
+*   fill = "#efefe3"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1d-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1d_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1d-auto[
+
+```r
+ggdumb_part2 +
+  geom_rect(
+    aes(
+      xmin = 0.55, xmax = 0.675,
+      ymin = -Inf, ymax = Inf
+    ),
+    fill = "#efefe3"
+  ) +
+* geom_text(
+*   aes(
+*     y = state, x = 0.6125,
+*     label = diff_pretty,
+*   ),
+*   fontface = "bold", size = 3
+* )
+```
+]
+ 
+.panel2-ggalt-demo1d-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1d_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1d-auto[
+
+```r
+ggdumb_part2 +
+  geom_rect(
+    aes(
+      xmin = 0.55, xmax = 0.675,
+      ymin = -Inf, ymax = Inf
+    ),
+    fill = "#efefe3"
+  ) +
+  geom_text(
+    aes(
+      y = state, x = 0.6125,
+      label = diff_pretty,
+    ),
+    fontface = "bold", size = 3
+  ) +
+* geom_text(
+*   data = filter(
+*     ggdumb_df, state == "Montana"
+*   ),
+*   aes(
+*     x = 0.6125, y = state,
+*     label = "DIFF"
+*   ),
+*   color = "#7a7d7e", size = 3.1,
+*   vjust = -2, fontface = "bold"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1d-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1d_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1d-auto[
+
+```r
+ggdumb_part2 +
+  geom_rect(
+    aes(
+      xmin = 0.55, xmax = 0.675,
+      ymin = -Inf, ymax = Inf
+    ),
+    fill = "#efefe3"
+  ) +
+  geom_text(
+    aes(
+      y = state, x = 0.6125,
+      label = diff_pretty,
+    ),
+    fontface = "bold", size = 3
+  ) +
+  geom_text(
+    data = filter(
+      ggdumb_df, state == "Montana"
+    ),
+    aes(
+      x = 0.6125, y = state,
+      label = "DIFF"
+    ),
+    color = "#7a7d7e", size = 3.1,
+    vjust = -2, fontface = "bold"
+  ) -&gt;
+* ggdumb_part3
+```
+]
+ 
+.panel2-ggalt-demo1d-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1d-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1d-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1d-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+*ggdumb_part3
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+* scale_x_continuous(
+*   expand = c(0, 0),
+*   limits = c(0, 0.675)
+* )
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+* labs(
+*   x = NULL, y = NULL,
+*   title = paste(
+*     "States with alcohol problem",
+*     "based on 2017-18 comparison"
+*   ),
+*   subtitle = paste(
+*     "Alcohol-impaired-driving",
+*     "fatalities (% of total)"
+*   ),
+*   caption = "Data source: FARS"
+* )
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+* theme_bw()
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+  theme_bw() +
+* theme(
+*   panel.grid.major = element_blank()
+* )
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.major = element_blank()
+  ) +
+* theme(
+*   panel.grid.minor = element_blank()
+* )
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.major = element_blank()
+  ) +
+  theme(
+    panel.grid.minor = element_blank()
+  ) +
+* theme(
+*   panel.border = element_blank()
+* )
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1e_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1e-auto[
+
+```r
+ggdumb_part3 +
+  scale_x_continuous(
+    expand = c(0, 0),
+    limits = c(0, 0.675)
+  ) +
+  labs(
+    x = NULL, y = NULL,
+    title = paste(
+      "States with alcohol problem",
+      "based on 2017-18 comparison"
+    ),
+    subtitle = paste(
+      "Alcohol-impaired-driving",
+      "fatalities (% of total)"
+    ),
+    caption = "Data source: FARS"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.major = element_blank()
+  ) +
+  theme(
+    panel.grid.minor = element_blank()
+  ) +
+  theme(
+    panel.border = element_blank()
+  ) -&gt;
+* ggdumb_part4
+```
+]
+ 
+.panel2-ggalt-demo1e-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1e-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1e-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1e-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+*ggdumb_part4
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+* theme(axis.ticks = element_blank())
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+* theme(axis.text.x = element_blank())
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+* theme(
+*   plot.title = element_text(
+*     face = "bold"
+*   )
+* )
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    )
+  ) +
+* theme(
+*   plot.subtitle = element_text(
+*     face = "italic", size = 9,
+*     margin = margin(b = 12)
+*   )
+* )
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    )
+  ) +
+  theme(
+    plot.subtitle = element_text(
+      face = "italic", size = 9,
+      margin = margin(b = 12)
+    )
+  ) +
+* theme(
+*   plot.caption = element_text(
+*     size = 7, margin = margin(t = 12),
+*     color = "#7a7d7e"
+*   )
+* )
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo1f-auto[
+
+```r
+ggdumb_part4 +
+  theme(axis.ticks = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+  theme(
+    plot.title = element_text(
+      face = "bold"
+    )
+  ) +
+  theme(
+    plot.subtitle = element_text(
+      face = "italic", size = 9,
+      margin = margin(b = 12)
+    )
+  ) +
+  theme(
+    plot.caption = element_text(
+      size = 7, margin = margin(t = 12),
+      color = "#7a7d7e"
+    )
+  ) +
+* geom_segment(
+*   aes(
+*     y = state, yend = state,
+*     x = 0, xend = 0.5
+*   ),
+*   color = "#b2b2b2", size = 0.15
+* )
+```
+]
+ 
+.panel2-ggalt-demo1f-auto[
+&lt;img src="index_files/figure-html/ggalt-demo1f_auto_07_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo1f-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo1f-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo1f-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: middle center bg-main1
+
+.font5[Example 2]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+*fatal_crash_smry_by_state
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+
+```
+  # A tibble: 12 x 9
+     state population vmt_millions fatal_crashes deaths death_rate_pop
+     &lt;chr&gt;      &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+   1 Illi~   12741080       107954           948   1031            8.1
+   2 Indi~    6691878        81529           774    858           12.8
+   3 Iowa     3156145        33282           291    318           10.1
+   4 Kans~    2911505        32190           366    404           13.9
+   5 Mich~    9995915       102398           905    974            9.7
+   6 Minn~    5611179        60438           349    381            6.8
+   7 Miss~    6126452        76595           848    921           15  
+   8 Nebr~    1929268        20975           201    230           11.9
+   9 Nort~     760077         9856            95    105           13.8
+  10 Ohio    11689442       114474           996   1068            9.1
+  11 Sout~     882235         9719           110    130           14.7
+  12 Wisc~    5813568        65885           530    588           10.1
+  # ... with 3 more variables: death_rate_vmt &lt;dbl&gt;,
+  #   death_rate_vmt_above_mean &lt;chr&gt;, death_rate_vmt_z &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+* slice_max(death_rate_vmt, n = 2)
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+
+```
+  # A tibble: 2 x 9
+    state population vmt_millions fatal_crashes deaths death_rate_pop
+    &lt;chr&gt;      &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+  1 Sout~     882235         9719           110    130           14.7
+  2 Kans~    2911505        32190           366    404           13.9
+  # ... with 3 more variables: death_rate_vmt &lt;dbl&gt;,
+  #   death_rate_vmt_above_mean &lt;chr&gt;, death_rate_vmt_z &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+* ggspike_df
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+*fatal_crash_smry_by_state
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+
+```
+  # A tibble: 12 x 9
+     state population vmt_millions fatal_crashes deaths death_rate_pop
+     &lt;chr&gt;      &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+   1 Illi~   12741080       107954           948   1031            8.1
+   2 Indi~    6691878        81529           774    858           12.8
+   3 Iowa     3156145        33282           291    318           10.1
+   4 Kans~    2911505        32190           366    404           13.9
+   5 Mich~    9995915       102398           905    974            9.7
+   6 Minn~    5611179        60438           349    381            6.8
+   7 Miss~    6126452        76595           848    921           15  
+   8 Nebr~    1929268        20975           201    230           11.9
+   9 Nort~     760077         9856            95    105           13.8
+  10 Ohio    11689442       114474           996   1068            9.1
+  11 Sout~     882235         9719           110    130           14.7
+  12 Wisc~    5813568        65885           530    588           10.1
+  # ... with 3 more variables: death_rate_vmt &lt;dbl&gt;,
+  #   death_rate_vmt_above_mean &lt;chr&gt;, death_rate_vmt_z &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+* ggplot(
+*   aes(
+*     x = death_rate_vmt,
+*     y = death_rate_pop
+*   )
+* )
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2a_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+  ggplot(
+    aes(
+      x = death_rate_vmt,
+      y = death_rate_pop
+    )
+  ) +
+* geom_point()
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2a_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+  ggplot(
+    aes(
+      x = death_rate_vmt,
+      y = death_rate_pop
+    )
+  ) +
+  geom_point() +
+* geom_encircle(
+*   data = ggspike_df,
+*   color = "red",
+*   s_shape = 0.3, expand = 0.03,
+*   spread = 0.01
+* )
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2a_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+  ggplot(
+    aes(
+      x = death_rate_vmt,
+      y = death_rate_pop
+    )
+  ) +
+  geom_point() +
+  geom_encircle(
+    data = ggspike_df,
+    color = "red",
+    s_shape = 0.3, expand = 0.03,
+    spread = 0.01
+  ) +
+* geom_point(
+*   data = ggspike_df,
+*   color = "red"
+* )
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2a_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+  ggplot(
+    aes(
+      x = death_rate_vmt,
+      y = death_rate_pop
+    )
+  ) +
+  geom_point() +
+  geom_encircle(
+    data = ggspike_df,
+    color = "red",
+    s_shape = 0.3, expand = 0.03,
+    spread = 0.01
+  ) +
+  geom_point(
+    data = ggspike_df,
+    color = "red"
+  ) +
+* geom_spikelines(
+*   data = ggspike_df,
+*   linetype = 2
+* )
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2a_auto_09_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2a-auto[
+
+```r
+fatal_crash_smry_by_state %&gt;%
+  slice_max(death_rate_vmt, n = 2) -&gt;
+  ggspike_df
+
+fatal_crash_smry_by_state %&gt;%
+  ggplot(
+    aes(
+      x = death_rate_vmt,
+      y = death_rate_pop
+    )
+  ) +
+  geom_point() +
+  geom_encircle(
+    data = ggspike_df,
+    color = "red",
+    s_shape = 0.3, expand = 0.03,
+    spread = 0.01
+  ) +
+  geom_point(
+    data = ggspike_df,
+    color = "red"
+  ) +
+  geom_spikelines(
+    data = ggspike_df,
+    linetype = 2
+  ) -&gt;
+* ggspike_part1
+```
+]
+ 
+.panel2-ggalt-demo2a-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo2a-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo2a-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo2a-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggalt-demo2b-auto[
+
+```r
+*ggspike_part1
+```
+]
+ 
+.panel2-ggalt-demo2b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2b_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2b-auto[
+
+```r
+ggspike_part1 +
+* geom_label_repel(
+*   data = ggspike_df,
+*   aes(
+*     label = glue(
+*       "({death_rate_vmt}, ",
+*       "{death_rate_pop})"
+*     )
+*   ),
+*   box.padding = 1, color = "red"
+* )
+```
+]
+ 
+.panel2-ggalt-demo2b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2b_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggalt-demo2b-auto[
+
+```r
+ggspike_part1 +
+  geom_label_repel(
+    data = ggspike_df,
+    aes(
+      label = glue(
+        "({death_rate_vmt}, ",
+        "{death_rate_pop})"
+      )
+    ),
+    box.padding = 1, color = "red"
+  ) +
+* labs(
+*   x = "Deaths per 100 million VMT",
+*   y = "Deaths per 100k population",
+*   title = paste(
+*     "Relationship between motor",
+*     "vehicle crash death rates",
+*     "for midwest, 2018"
+*   ),
+*   caption = "Data source: IIHS"
+* )
+```
+]
+ 
+.panel2-ggalt-demo2b-auto[
+&lt;img src="index_files/figure-html/ggalt-demo2b_auto_03_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggalt-demo2b-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggalt-demo2b-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggalt-demo2b-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggalt vignette]](https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://cran.r-project.org/web/packages/ggalt/vignettes/ggalt_examples.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggridges]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+*fatal_crash_monthly_counts
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+
+```
+  # A tibble: 120 x 3
+     crash_year crash_month fatal_crash_freq
+          &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt;
+   1       2010 Jan                     2101
+   2       2010 Feb                     1830
+   3       2010 Mar                     2213
+   4       2010 Apr                     2552
+   5       2010 May                     2704
+   6       2010 Jun                     2569
+   7       2010 Jul                     2852
+   8       2010 Aug                     2825
+   9       2010 Sep                     2799
+  10       2010 Oct                     2827
+  # ... with 110 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+* ggplot(
+*   aes(
+*     x = fatal_crash_freq,
+*     y = crash_month,
+*     fill = stat(x)
+*   )
+* )
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+&lt;img src="index_files/figure-html/ggridges-demo1_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  ggplot(
+    aes(
+      x = fatal_crash_freq,
+      y = crash_month,
+      fill = stat(x)
+    )
+  ) +
+* geom_density_ridges_gradient(
+*   scale = 3,
+*   rel_min_height = 0.01
+* )
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+&lt;img src="index_files/figure-html/ggridges-demo1_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  ggplot(
+    aes(
+      x = fatal_crash_freq,
+      y = crash_month,
+      fill = stat(x)
+    )
+  ) +
+  geom_density_ridges_gradient(
+    scale = 3,
+    rel_min_height = 0.01
+  ) +
+* scale_y_discrete(
+*   limits = rev(month.abb)
+* )
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+&lt;img src="index_files/figure-html/ggridges-demo1_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  ggplot(
+    aes(
+      x = fatal_crash_freq,
+      y = crash_month,
+      fill = stat(x)
+    )
+  ) +
+  geom_density_ridges_gradient(
+    scale = 3,
+    rel_min_height = 0.01
+  ) +
+  scale_y_discrete(
+    limits = rev(month.abb)
+  ) +
+* scale_fill_viridis_c(
+*   name = "Fatal Crash Freq.",
+*   option = "C"
+* )
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+&lt;img src="index_files/figure-html/ggridges-demo1_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggridges-demo1-auto[
+
+```r
+fatal_crash_monthly_counts %&gt;%
+  ggplot(
+    aes(
+      x = fatal_crash_freq,
+      y = crash_month,
+      fill = stat(x)
+    )
+  ) +
+  geom_density_ridges_gradient(
+    scale = 3,
+    rel_min_height = 0.01
+  ) +
+  scale_y_discrete(
+    limits = rev(month.abb)
+  ) +
+  scale_fill_viridis_c(
+    name = "Fatal Crash Freq.",
+    option = "C"
+  ) +
+* labs(
+*   x = "Fatal crash frequency",
+*   y = "Crash month",
+*   title = paste(
+*     "Motor vehicle monthly fatal",
+*     "crashes in the U.S., 2010–2019"
+*   )
+* )
+```
+]
+ 
+.panel2-ggridges-demo1-auto[
+&lt;img src="index_files/figure-html/ggridges-demo1_auto_06_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggridges-demo1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggridges-demo1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggridges-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggridges website]](https://wilkelab.org/ggridges/index.html) to learn more 
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://wilkelab.org/ggridges/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggimage]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+.font2[Data source: [.yellow[WHO]](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/estimated-road-traffic-death-rate-%28per-100-000-population%29)]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggimage-demo1a-auto[
+
+```r
+*tibble(
+* country = c(
+*   "Dominican Republic", "Zimbabwe",
+*   "Saudi Arabia", "Tonga",
+*   "Thailand", "Armenia"
+* ),
+* deaths_per_100k_pop = c(
+*   193.86, 126.03,
+*   102.19, 98.83,
+*   97.67, 61.02
+* )
+*) 
+```
+]
+ 
+.panel2-ggimage-demo1a-auto[
+
+```
+  # A tibble: 6 x 2
+    country            deaths_per_100k_pop
+    &lt;chr&gt;                            &lt;dbl&gt;
+  1 Dominican Republic               194. 
+  2 Zimbabwe                         126. 
+  3 Saudi Arabia                     102. 
+  4 Tonga                             98.8
+  5 Thailand                          97.7
+  6 Armenia                           61.0
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1a-auto[
+
+```r
+tibble(
+  country = c(
+    "Dominican Republic", "Zimbabwe",
+    "Saudi Arabia", "Tonga",
+    "Thailand", "Armenia"
+  ),
+  deaths_per_100k_pop = c(
+    193.86, 126.03,
+    102.19, 98.83,
+    97.67, 61.02
+  )
+) %&gt;%
+* mutate(
+*   country_code = countrycode(
+*     country,
+*     "country.name",
+*     "iso2c"
+*   )
+* )
+```
+]
+ 
+.panel2-ggimage-demo1a-auto[
+
+```
+  # A tibble: 6 x 3
+    country            deaths_per_100k_pop country_code
+    &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;       
+  1 Dominican Republic               194.  DO          
+  2 Zimbabwe                         126.  ZW          
+  3 Saudi Arabia                     102.  SA          
+  4 Tonga                             98.8 TO          
+  5 Thailand                          97.7 TH          
+  6 Armenia                           61.0 AM
+```
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1a-auto[
+
+```r
+tibble(
+  country = c(
+    "Dominican Republic", "Zimbabwe",
+    "Saudi Arabia", "Tonga",
+    "Thailand", "Armenia"
+  ),
+  deaths_per_100k_pop = c(
+    193.86, 126.03,
+    102.19, 98.83,
+    97.67, 61.02
+  )
+) %&gt;%
+  mutate(
+    country_code = countrycode(
+      country,
+      "country.name",
+      "iso2c"
+    )
+  ) -&gt;
+* ggimage_df
+```
+]
+ 
+.panel2-ggimage-demo1a-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggimage-demo1a-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggimage-demo1a-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggimage-demo1a-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+*ggplot(
+* ggimage_df,
+* aes(
+*   x = fct_reorder(
+*     country, deaths_per_100k_pop
+*   ),
+*   y = deaths_per_100k_pop
+* )
+*) 
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+* geom_point()
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+* geom_segment(
+*   aes(
+*     y = 0, yend = deaths_per_100k_pop,
+*     x = country, xend = country
+*   )
+* )
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+* geom_flag(
+*   y = -8, aes(image = country_code)
+* )
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) +
+* coord_flip()
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) +
+  coord_flip() +
+* expand_limits(y = -8)
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) +
+  coord_flip() +
+  expand_limits(y = -8) +
+* theme_minimal()
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_07_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) +
+  coord_flip() +
+  expand_limits(y = -8) +
+  theme_minimal() +
+* theme(axis.title = element_blank())
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1b_auto_08_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1b-auto[
+
+```r
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ),
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop,
+      x = country, xend = country
+    )
+  ) +
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) +
+  coord_flip() +
+  expand_limits(y = -8) +
+  theme_minimal() +
+  theme(axis.title = element_blank()) -&gt;
+* ggimage_part1
+```
+]
+ 
+.panel2-ggimage-demo1b-auto[
+
+]
+
+&lt;style&gt;
+.panel1-ggimage-demo1b-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggimage-demo1b-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggimage-demo1b-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggimage-demo1c-auto[
+
+```r
+*ggimage_part1
+```
+]
+ 
+.panel2-ggimage-demo1c-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1c_auto_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1c-auto[
+
+```r
+ggimage_part1 +
+* labs(
+*   title = paste(
+*     "Countries with the highest road",
+*     "traffic death rate (per 100k",
+*     "population) \nwithin each",
+*     "continent"
+*   )
+* )
+```
+]
+ 
+.panel2-ggimage-demo1c-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1c_auto_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggimage-demo1c-auto[
+
+```r
+ggimage_part1 +
+  labs(
+    title = paste(
+      "Countries with the highest road",
+      "traffic death rate (per 100k",
+      "population) \nwithin each",
+      "continent"
+    )
+  ) +
+* labs(caption = "Data source: WHO")
+```
+]
+ 
+.panel2-ggimage-demo1c-auto[
+&lt;img src="index_files/figure-html/ggimage-demo1c_auto_03_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggimage-demo1c-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggimage-demo1c-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggimage-demo1c-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggimage tutorial]](https://guangchuangyu.github.io/2017/04/ggimage/) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://guangchuangyu.github.io/2017/04/ggimage/" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggthemes + ggdark]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+---
+
+
+
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* theme_bw()
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_01_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* theme_solarized()
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_02_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* theme_fivethirtyeight()
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_03_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* dark_mode(theme_fivethirtyeight())
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_04_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* theme_economist()
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_05_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* dark_mode(theme_economist())
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_06_output-1.png" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-ggthemes-demo1-rotate[
+
+```r
+lol_chart +
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+* theme_economist_white()
+```
+]
+ 
+.panel2-ggthemes-demo1-rotate[
+&lt;img src="index_files/figure-html/ggthemes-demo1_rotate_07_output-1.png" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ggthemes-demo1-rotate {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-ggthemes-demo1-rotate {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-ggthemes-demo1-rotate {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [.yellow[ggthemes website]](https://jrnold.github.io/ggthemes/index.html) to learn more 
+
+## 👉
+
+]]
+
+.column[.content.vmiddle[
+
+&lt;iframe src="https://jrnold.github.io/ggthemes/index.html" width="100%" height="600px"&gt;&lt;/iframe&gt;
+
+]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[Thank you!]
+]
+
+]]
+
+---
+
+# .purple[Closing remarks...]
+
+&lt;br&gt;
+
+.pull-left[
+
+.center[
+![happy+spring](https://media4.giphy.com/media/28mfE2hXuxlTbHp6QW/giphy.gif)  
+&lt;div style='font-size:50%'&gt;(Available at [http://gph.is/2porEcP](http://gph.is/2porEcP), Mar 14, 2021)&lt;/div&gt;
+]
+
+]
+
+.pull-right[
+
+## .orange[A big thanks to...]
+
+### - Yihui Xie for [.blue[xaringan]](https://github.com/yihui/xaringan),
+### - Gina Reynolds for [.blue[flipbookr]](https://github.com/EvaMaeRey/flipbookr),
+### - Sarah Romanes for [.blue[slide layout]](https://github.com/sarahromanes/r-ladies-ML-1/blob/master/index.Rmd),
+### - Garrick Aden-Buie for [.blue[xaringanExtra]](https://github.com/gadenbuie/xaringanExtra),
+### - Developers of ggplot2 extensions, and
+### - [.blue[Ganesh Krishnan]](https://www.linkedin.com/in/ganeshkrishnann/) and [.blue[ISU Graphics Group]](https://isu-graphics.rbind.io/) for the talk invitation
+
+&lt;br&gt;
+
+### 👀 [.red[GitHub repo]](https://github.com/ashirwad/isu-graphics-ggext) | License: [.red[CC BY-SA 4.0]](https://creativecommons.org/licenses/by-sa/4.0/)
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
