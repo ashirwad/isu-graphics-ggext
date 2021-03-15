@@ -1311,7 +1311,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggthemes website]("https://jrnold.github.io/ggthemes/index.html") to learn more 
+## Check [.yellow[ggthemes website]](https://jrnold.github.io/ggthemes/index.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -1320,9 +1320,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggthemes-website, echo = FALSE}
-knitr::include_url(
-  "https://jrnold.github.io/ggthemes/index.html", height = "600px"
-)
+include_url("https://jrnold.github.io/ggthemes/index.html")
 ```
 
 ]]
