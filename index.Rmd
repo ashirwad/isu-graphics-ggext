@@ -1114,8 +1114,8 @@ fatal_crash_monthly_counts %>%
     x = "Fatal crash frequency",
     y = "Crash month",
     title = paste(
-      "Motor vehicle fatal crash trend",
-      "by month, 2010–2019"
+      "Motor vehicle monthly fatal",
+      "crashes in the U.S., 2010–2019"
     )
   ) 
 ```
@@ -1128,8 +1128,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggridges website]("https://wilkelab.org/ggridges/articles/introduction.html") to learn more 
-
+## Check [.yellow[ggridges website]](https://wilkelab.org/ggridges/index.html) to learn more 
 ## `r ji("point_right")`
 
 ]]
@@ -1137,9 +1136,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggridges-website, echo = FALSE}
-knitr::include_url(
-  "https://wilkelab.org/ggridges/articles/introduction.html", height = "600px"
-)
+include_url("https://wilkelab.org/ggridges/index.html")
 ```
 
 ]]
