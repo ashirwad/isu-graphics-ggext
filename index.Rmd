@@ -14,23 +14,44 @@ output:
     lib_dir: libs
 ---
 
-```{r before-slides, include = FALSE, cache = FALSE}
+```{r before-slides, include = FALSE}
 # Prettify slide appearance
 knitr::opts_chunk$set(
   warning = FALSE, 
   message = FALSE,
-  cache = TRUE, 
-  autodep = TRUE,
   fig.height = 6, 
   out.width = "100%", 
   comment = " ",
   dpi = 300
 )
 xaringanExtra::use_panelset()
+xaringanExtra::use_share_again()
+
+# Add metadata
+library(metathis)
+meta() %>%
+  meta_name("github-repo" = "ashirwad/isu-graphics-ggext") %>% 
+  meta_social(
+    title = "Getting familiar with ggplot2 extensions",
+    description = paste(
+      "Some of my most frequently used ggplot2 extensions.",
+      "Presented at ISU Graphics Group meeting in Spring 2021."
+    ),
+    url = "https://isugg21-ggext.netlify.app",
+    image = "https://isugg21-ggext.netlify.app/social-media-card.png",
+    image_alt = paste(
+      "Title slide of Getting familiar with ggplot2 extensions:", 
+      "Some of my most frequently used ggplot2 extensions,", 
+      "presented at ISU Graphics Group meeting in Spring 2021 by Ashirwad Barnwal"
+    ),
+    og_type = "website",
+    og_author = "Ashirwad Barnwal",
+    twitter_card_type = "summary_large_image"
+  )
 ```
 
 
-```{r setup, include = FALSE, cache = FALSE}
+```{r setup, include = FALSE}
 ## Load packages
 
 # Path and data manipulation
