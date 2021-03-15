@@ -543,12 +543,12 @@ fatal_crash_monthly_counts %>%
 > The data in each category is shifting overtime, as can clearly be seen in the "Raw" data view, yet the boxplots remain static. Violin plots are a good method for presenting the distribution of a dataset with more detail than is available with a traditional boxplot. This is not to say that using a boxplot is never appropriate, but if you are going to use a boxplot, it is important to make sure the underlying data is distrubuted in a way that important information is not hidden. – **Justin Matejka & George Fitzmaurice**
 
 ```{r violin-vs-boxplot, echo = FALSE}
-knitr::include_graphics("https://d2f99xq7vri1nk.cloudfront.net/BoxViolinSmaller.gif")
+include_graphics("https://d2f99xq7vri1nk.cloudfront.net/BoxViolinSmaller.gif")
 ```
 
 .center[
 
-Source: [Autodesk research]("https://www.autodesk.com/research/publications/same-stats-different-graphs")
+Source: [.blue[Autodesk research]]("https://www.autodesk.com/research/publications/same-stats-different-graphs")
 
 ]
 
@@ -558,7 +558,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggpubr website]("https://rpkgs.datanovia.com/ggpubr/index.html") to learn more 
+## Check [.yellow[ggpubr website]](https://rpkgs.datanovia.com/ggpubr/index.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -567,9 +567,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggpubr-website, echo = FALSE}
-knitr::include_url(
-  "https://rpkgs.datanovia.com/ggpubr/index.html", height = "600px"
-)
+include_url("https://rpkgs.datanovia.com/ggpubr/index.html")
 ```
 
 ]]
