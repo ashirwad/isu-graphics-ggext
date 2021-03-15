@@ -1179,3 +1179,68 @@ knitr::include_url(
 
 ]]
 
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggthemes + ggdark]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+---
+
+```{r ggthemes-demo1, include = FALSE}
+lol_chart + 
+  labs(
+    title = paste(
+      "Traffic crash death rate",
+      "per midwest state, 2018"
+    )
+  ) +
+  theme_bw() + #ROTATE
+  theme_solarized() + #ROTATE
+  theme_fivethirtyeight() + #ROTATE
+  dark_mode(theme_fivethirtyeight()) + #ROTATE
+  theme_economist() + #ROTATE
+  dark_mode(theme_economist()) + #ROTATE
+  theme_economist_white() #ROTATE
+```
+
+`r chunk_reveal("ggthemes-demo1", break_type = "rotate")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggthemes website]("https://jrnold.github.io/ggthemes/index.html") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggthemes-website, echo = FALSE}
+knitr::include_url(
+  "https://jrnold.github.io/ggthemes/index.html", height = "600px"
+)
+```
+
+]]
