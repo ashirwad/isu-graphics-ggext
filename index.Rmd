@@ -42,6 +42,8 @@ library(ggpubr)
 library(ggrepel)
 library(ggalt)
 library(ggridges)
+library(ggimage)
+library(countrycode)
 library(patchwork)
 library(viridisLite)
 library(ggthemes)
@@ -1057,5 +1059,123 @@ knitr::include_url(
 
 ]]
 
+---
 
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[ggimage]
+]
+
+]]
+
+---
+
+class: middle center bg-main1
+
+.font5[Example]
+
+---
+
+```{r ggimage-demo1-1, include = FALSE}
+tibble(
+  country = c(
+    "Dominican Republic", "Zimbabwe",
+    "Saudi Arabia", "Tonga", 
+    "Thailand", "Armenia"
+  ),
+  deaths_per_100k_pop = c(
+    193.86, 126.03,
+    102.19, 98.83, 
+    97.67, 61.02
+  )
+) %>%
+  mutate(
+    country_code = countrycode(
+      country, 
+      "country.name", 
+      "iso2c"
+    )
+  ) ->
+  ggimage_df
+```
+
+`r chunk_reveal("ggimage-demo1-1")`
+
+---
+
+```{r ggimage-demo1-2, include = FALSE}
+ggplot(
+  ggimage_df,
+  aes(
+    x = fct_reorder(
+      country, deaths_per_100k_pop
+    ), 
+    y = deaths_per_100k_pop
+  )
+) +
+  geom_point() +
+  geom_segment(
+    aes(
+      y = 0, yend = deaths_per_100k_pop, 
+      x = country, xend = country
+    )
+  ) + 
+  geom_flag(
+    y = -8, aes(image = country_code)
+  ) + 
+  coord_flip() +
+  expand_limits(y = -8) + 
+  theme_minimal() + 
+  theme(axis.title = element_blank()) ->
+  ggimage_part1
+```
+
+`r chunk_reveal("ggimage-demo1-2")`
+
+---
+
+```{r ggimage-demo1-3, include = FALSE}
+ggimage_part1 +
+  labs(
+    title = paste(
+      "Countries with the highest road",
+      "traffic death rate (per 100k",
+      "population) \nwithin each",
+      "continent"
+    )
+  ) + 
+  labs(caption = "Data source: WHO")
+```
+
+`r chunk_reveal("ggimage-demo1-3")`
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+## Check [ggimage tutorial]("https://guangchuangyu.github.io/2017/04/ggimage/") to learn more 
+
+## `r ji("point_right")`
+
+]]
+
+.column[.content.vmiddle[
+
+```{r ggimage-tutorial, echo = FALSE}
+knitr::include_url(
+  "https://guangchuangyu.github.io/2017/04/ggimage/", height = "600px"
+)
+```
+
+]]
 
