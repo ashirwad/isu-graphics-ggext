@@ -259,7 +259,7 @@ ggplot(fatal_crash_monthly_counts) +
   labs(
     title = paste(
       "Motor vehicle fatal crash trend",
-      "by month, 2010–2019"
+      "in the U.S. by month, 2010–2019"
     )
   ) +
   labs(caption = "Data source: FARS") +
@@ -276,7 +276,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [gghighlight intro-guide]("https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html") to learn more 
+## Check [.yellow[gghighlight website]](https://yutannihilation.github.io/gghighlight/index.html) to learn more 
 
 ## `r ji("point_right")`
 
@@ -285,10 +285,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r gghigh-website, echo = FALSE}
-knitr::include_url(
-  "https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html", 
-  height = "600px"
-)
+include_url("https://yutannihilation.github.io/gghighlight/index.html")
 ```
 
 ]]
