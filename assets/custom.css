@@ -1,0 +1,37 @@
+/*Thanks, Sarah: https://github.com/sarahromanes/r-ladies-ML-1/blob/30c485683e4136c60ec83d814e87c5a5b99ac36b/assets/custom.css*/
+
+
+/*customising title background needs to be via remark-slide due to how default title slides are defined*/
+.remark-slide {
+  background-image: url("../bkg/bg1.png"), url("../bkg/bg2.png");
+  background-size: 10%, cover;
+  background-position: left bottom, 100%;
+  background-repeat: no-repeat;
+}
+
+.width70 {
+  width: 70%;
+}
+
+.borderit {
+  border-style: solid;
+  border-width: 4px;
+  border-color: black;
+}
+
+.p-canvas-webgl {
+  position: fixed;
+  z-index: 1;
+  top: 0; left: 0;
+}
+
+.remark-code-line{
+  font-size: 80%;
+}
+
+.pink-code * > .remark-inline-code  {
+  color: #E61771!important;
+}
+
+.content > h4, h5, h6
+{ padding-left: 2%; padding-right: 2%;}
