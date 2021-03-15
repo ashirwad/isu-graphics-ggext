@@ -54,6 +54,8 @@ library(default)
 library(knitr)
 default(include_url) <- list(height = "600px")
 
+xaringanExtra::use_panelset()
+
 # Import & process data
 midwest <- c(
   "Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", 
@@ -131,6 +133,47 @@ include_url("https://exts.ggplot2.tidyverse.org/gallery/")
 ```
 
 ]]
+
+---
+
+# .purple[Data description]
+
+.panelset[
+
+.panel[.panel-name[Fatal crash summary by state, 2019]
+
+```{r fatal-crash-smry-by-state}
+# Only midwest
+glimpse(fatal_crash_smry_by_state)
+```
+
+.center[Data source: [Insurance Institute for Highway Safety (IIHS)](https://www.iihs.org/topics/fatality-statistics/detail/state-by-state#fatal-crash-totals)]
+
+]
+
+.panel[.panel-name[Fatal crash monthly counts, 2010-19]
+
+```{r fatal-crash-monthly-counts}
+# Across the United States
+glimpse(fatal_crash_monthly_counts)
+```
+
+.center[Data source: [Fatality Analysis Reporting System (FARS)](https://cdan.dot.gov/query)]
+
+]
+
+.panel[.panel-name[States with alcohol problem, 2017-18]
+
+```{r states-with-alcohol-problem}
+# Across the United States
+glimpse(states_with_alcohol_problem)
+```
+
+.center[Data source: [Traffic safety facts (Table 7)](https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/812826)]
+
+]
+
+]
 
 ---
 
