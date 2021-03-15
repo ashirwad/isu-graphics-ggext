@@ -1,6 +1,6 @@
 ---
-title: "Meet ggplot2 extensions"
-subtitle: "Take your ggplot2 skills up a notch"
+title: "Getting familiar with ggplot2 extensions"
+subtitle: "Some of my most frequently used extensions"
 author: "<br><br>Ashirwad Barnwal&nbsp;&nbsp;&nbsp;"
 date: "<br>18-Feb-2021<br><br>"
 output: 
@@ -31,32 +31,36 @@ xaringanExtra::use_panelset()
 
 
 ```{r setup, include = FALSE, cache = FALSE}
-# Load packages
+## Load packages
+
+# Path and data manipulation
 library(conflicted)
 library(here)
+library(glue)
 library(tidyverse)
 conflict_prefer("filter", "dplyr")
-library(glue)
+
+# ggplot2 extensions and helpers
 library(gghighlight)
-library(ggpubr)
 library(ggrepel)
+library(ggpubr)
+library(patchwork)
 library(ggalt)
 library(ggridges)
-library(ggimage)
 library(countrycode)
-library(patchwork)
-library(viridisLite)
+library(ggimage)
 library(ggthemes)
 library(ggdark)
+library(viridisLite)
+
+# Miscellaneous
 library(flipbookr)
 library(emo)
 library(default)
 library(knitr)
 default(include_url) <- list(height = "600px")
 
-xaringanExtra::use_panelset()
-
-# Import & process data
+## Import & process data
 midwest <- c(
   "Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", 
   "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin"
@@ -72,7 +76,7 @@ fatal_crash_smry_by_state <- read_csv(
     death_rate_vmt > mean(death_rate_vmt), "Yes", "No"),
     death_rate_vmt_z = death_rate_vmt
   ) %>%
-  mutate(across(death_rate_vmt_z, ~round(as.vector(scale(.x)), 2)))
+  mutate(across(death_rate_vmt_z, ~ round(as.vector(scale(.x)), 2)))
 
 fatal_crash_monthly_counts <- read_csv(
   here("data", "usa-fatal-crash-count-by-month.csv")
@@ -140,7 +144,7 @@ include_url("https://exts.ggplot2.tidyverse.org/gallery/")
 
 .panelset[
 
-.panel[.panel-name[Fatal crash summary by state, 2019]
+.panel[.panel-name[Fatal crash summary by state, 2018]
 
 ```{r fatal-crash-smry-by-state}
 # Only midwest
@@ -548,7 +552,7 @@ include_graphics("https://d2f99xq7vri1nk.cloudfront.net/BoxViolinSmaller.gif")
 
 .center[
 
-Source: [.blue[Autodesk research]]("https://www.autodesk.com/research/publications/same-stats-different-graphs")
+Source: [.blue[Autodesk research]](https://www.autodesk.com/research/publications/same-stats-different-graphs)
 
 ]
 
@@ -1364,8 +1368,9 @@ class: bg-main3 split-30 hide-slide-number
 ### - Yihui Xie for [.blue[xaringan]](https://github.com/yihui/xaringan),
 ### - Gina Reynolds for [.blue[flipbookr]](https://github.com/EvaMaeRey/flipbookr),
 ### - Sarah Romanes for [.blue[slide layout]](https://github.com/sarahromanes/r-ladies-ML-1/blob/master/index.Rmd),
-### - Garrick Aden-Buie for [.blue[xaringanExtra]](https://github.com/gadenbuie/xaringanExtra), and
-### - Developers of ggplot2 extensions
+### - Garrick Aden-Buie for [.blue[xaringanExtra]](https://github.com/gadenbuie/xaringanExtra),
+### - Developers of ggplot2 extensions, and
+### - [.blue[Ganesh Krishnan]](https://www.linkedin.com/in/ganeshkrishnann/) and [.blue[ISU Graphics Group]](https://isu-graphics.rbind.io/) for the talk invitation
 
 <br>
 
