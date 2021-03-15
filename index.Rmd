@@ -50,6 +50,9 @@ library(ggthemes)
 library(ggdark)
 library(flipbookr)
 library(emo)
+library(default)
+library(knitr)
+default(include_url) <- list(height = "600px")
 
 # Import & process data
 midwest <- c(
@@ -81,6 +84,55 @@ states_with_alcohol_problem <- read_csv(
   here("data", "states-with-alcohol-problem-in-2018.csv")
 )
 ```
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[Welcome!]
+]
+
+]]
+
+---
+
+class: split-40 white
+
+.column.bg-main1[.content.vmiddle.center[
+
+# Overview
+
+<br><br>
+
+### ggplot2 alone = `r ji("flexed_biceps")`
+
+### ggplot2 + extensions = `r ji("flexed_biceps")` `r ji("flexed_biceps")`
+
+<br>
+
+### In this talk, I will introduce some of my .yellow[most frequently used] ggplot2 extensions.
+
+<br>
+
+### Let's get started!
+
+]]
+
+.column[.content.vmiddle.center[
+
+```{r ggext-gallery, echo = FALSE}
+include_url("https://exts.ggplot2.tidyverse.org/gallery/")
+```
+
+]]
+
+---
 
 layout: false
 class: bg-main3 split-30 hide-slide-number
