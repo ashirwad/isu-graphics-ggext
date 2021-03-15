@@ -1164,9 +1164,11 @@ class: middle center bg-main1
 
 .font5[Example]
 
+.font2[Data source: [.yellow[WHO]](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/estimated-road-traffic-death-rate-%28per-100-000-population%29)]
+
 ---
 
-```{r ggimage-demo1-1, include = FALSE}
+```{r ggimage-demo1a, include = FALSE}
 tibble(
   country = c(
     "Dominican Republic", "Zimbabwe",
@@ -1189,11 +1191,11 @@ tibble(
   ggimage_df
 ```
 
-`r chunk_reveal("ggimage-demo1-1")`
+`r chunk_reveal("ggimage-demo1a")`
 
 ---
 
-```{r ggimage-demo1-2, include = FALSE}
+```{r ggimage-demo1b, include = FALSE}
 ggplot(
   ggimage_df,
   aes(
@@ -1220,11 +1222,11 @@ ggplot(
   ggimage_part1
 ```
 
-`r chunk_reveal("ggimage-demo1-2")`
+`r chunk_reveal("ggimage-demo1b")`
 
 ---
 
-```{r ggimage-demo1-3, include = FALSE}
+```{r ggimage-demo1c, include = FALSE}
 ggimage_part1 +
   labs(
     title = paste(
@@ -1237,7 +1239,7 @@ ggimage_part1 +
   labs(caption = "Data source: WHO")
 ```
 
-`r chunk_reveal("ggimage-demo1-3")`
+`r chunk_reveal("ggimage-demo1c")`
 
 ---
 
@@ -1245,7 +1247,7 @@ class: split-40 white
 
 .column.bg-main1[.content.vmiddle.center[
 
-## Check [ggimage tutorial]("https://guangchuangyu.github.io/2017/04/ggimage/") to learn more 
+## Check [.yellow[ggimage tutorial]](https://guangchuangyu.github.io/2017/04/ggimage/) to learn more 
 
 ## `r ji("point_right")`
 
@@ -1254,9 +1256,7 @@ class: split-40 white
 .column[.content.vmiddle[
 
 ```{r ggimage-tutorial, echo = FALSE}
-knitr::include_url(
-  "https://guangchuangyu.github.io/2017/04/ggimage/", height = "600px"
-)
+include_url("https://guangchuangyu.github.io/2017/04/ggimage/")
 ```
 
 ]]
