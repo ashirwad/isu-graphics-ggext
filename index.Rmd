@@ -1339,3 +1339,51 @@ knitr::include_url(
 ```
 
 ]]
+
+---
+
+layout: false
+class: bg-main3 split-30 hide-slide-number
+
+.column[
+
+]
+
+.column.slide-in-right[.content.vmiddle[
+
+.sliderbox.shade_main.pad1[
+.font5[Thank you!]
+]
+
+]]
+
+---
+
+# .purple[Closing remarks...]
+
+<br>
+
+.pull-left[
+
+.center[
+![happy+spring](https://media4.giphy.com/media/28mfE2hXuxlTbHp6QW/giphy.gif)  
+<div style='font-size:50%'>(Available at [http://gph.is/2porEcP](http://gph.is/2porEcP), Mar 14, 2021)</div>
+]
+
+]
+
+.pull-right[
+
+## .orange[A big thanks to...]
+
+### - Yihui Xie for [.blue[xaringan]](https://github.com/yihui/xaringan),
+### - Gina Reynolds for [.blue[flipbookr]](https://github.com/EvaMaeRey/flipbookr),
+### - Sarah Romanes for [.blue[slide layout]](https://github.com/sarahromanes/r-ladies-ML-1/blob/master/index.Rmd),
+### - Garrick Aden-Buie for [.blue[xaringanExtra]](https://github.com/gadenbuie/xaringanExtra), and
+### - Developers of ggplot2 extensions
+
+<br>
+
+### `r ji("look")` [.red[GitHub repo]](https://github.com/ashirwad/isu-graphics-ggext) | License: [.red[CC BY-SA 4.0]](https://creativecommons.org/licenses/by-sa/4.0/)
+
+]
